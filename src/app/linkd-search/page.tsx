@@ -23,16 +23,16 @@ export default function LinkdSearchPage() {
   
   // Form state
   const [userProfile, setUserProfile] = useState<UserProfile>({
-    universityName: 'USC',
-    fullName: 'John Smith',
-    gradeYear: 'Senior',
-    clubs: ['Robotics Club', 'AI Society'],
-    societies: ['Phi Beta Kappa', 'Tau Beta Pi'],
-    location: 'Los Angeles'
+    universityName: '',
+    fullName: '',
+    gradeYear: 'Freshman',
+    clubs: [],
+    societies: [],
+    location: ''
   });
   
   const [userObjective, setUserObjective] = useState(
-    'I want to connect with software engineers at Google for internship opportunities'
+    ''
   );
   
   const [searchLimit, setSearchLimit] = useState(5);
@@ -42,13 +42,45 @@ export default function LinkdSearchPage() {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Basic form validation
+    if (!userProfile.universityName.trim()) {
+      setError("Please enter your university name");
+      return;
+    }
+    
+    if (!userProfile.fullName.trim()) {
+      setError("Please enter your full name");
+      return;
+    }
+    
+    if (!userProfile.location.trim()) {
+      setError("Please enter your location");
+      return;
+    }
+    
+    if (userProfile.clubs.length === 0) {
+      setError("Please enter at least one club you're involved with");
+      return;
+    }
+    
+    if (userProfile.societies.length === 0) {
+      setError("Please enter at least one society you're involved with");
+      return;
+    }
+    
+    if (!userObjective.trim()) {
+      setError("Please describe your objective for connecting with LinkedIn profiles");
+      return;
+    }
+    
     setLoading(true);
     setError(null);
     setResults(null);
     setGeneratedQuery(null);
     
     try {
-      // First, get the generated query to show the user
+      // Pass the user's objective directly to Gemini API for query generation
       const queryResponse = await fetch('/api/gemini-test', {
         method: 'POST',
         headers: {
@@ -64,28 +96,31 @@ export default function LinkdSearchPage() {
       
       if (queryData.success && queryData.text) {
         setGeneratedQuery(queryData.text);
-      }
-      
-      // Then, perform the actual search
-      const searchResponse = await fetch('/api/linkd-search', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userProfile,
-          userObjective,
-          limit: searchLimit,
-          additionalSchools: additionalSchools.length > 0 ? additionalSchools : undefined
-        }),
-      });
-      
-      const searchData = await searchResponse.json();
-      
-      if (searchData.error) {
-        setError(searchData.error);
+        
+        // Now use this generated query to search LinkedIn profiles
+        const searchResponse = await fetch('/api/linkd-search', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userProfile,
+            userObjective,
+            limit: searchLimit,
+            additionalSchools: additionalSchools.length > 0 ? additionalSchools : undefined,
+            generatedQuery: queryData.text // Pass the generated query to the search API
+          }),
+        });
+        
+        const searchData = await searchResponse.json();
+        
+        if (searchData.error) {
+          setError(searchData.error);
+        } else {
+          setResults(searchData);
+        }
       } else {
-        setResults(searchData);
+        setError(queryData.error || 'Failed to generate search query');
       }
     } catch (err: any) {
       setError(err.message || 'An error occurred');
@@ -213,6 +248,21 @@ export default function LinkdSearchPage() {
     <div className="p-8 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">Linkd Search with Gemini</h1>
       
+      <div className="bg-blue-50 p-4 rounded-lg mb-6">
+        <h2 className="text-lg font-semibold mb-2">Welcome to Linkd Search with Gemini AI</h2>
+        <p className="mb-2">
+          This tool helps you find and connect with professionals on LinkedIn by:
+        </p>
+        <ol className="list-decimal list-inside mb-2 ml-4">
+          <li>Using AI to generate optimized search queries based on your profile and objective</li>
+          <li>Finding relevant LinkedIn profiles through the Linkd API</li>
+          <li>Creating personalized outreach messages for each profile</li>
+        </ol>
+        <p className="text-sm text-gray-600 italic">
+          Fill out your information below to get started.
+        </p>
+      </div>
+      
       <form onSubmit={handleSubmit} className="mb-8 space-y-6">
         <div className="bg-gray-50 p-4 rounded-lg">
           <h2 className="text-xl font-semibold mb-4">User Profile</h2>
@@ -227,6 +277,7 @@ export default function LinkdSearchPage() {
                 value={userProfile.universityName}
                 onChange={(e) => setUserProfile({...userProfile, universityName: e.target.value})}
                 className="w-full p-2 border rounded"
+                placeholder="e.g., USC, Stanford, MIT"
                 required
               />
             </div>
@@ -240,6 +291,7 @@ export default function LinkdSearchPage() {
                 value={userProfile.fullName}
                 onChange={(e) => setUserProfile({...userProfile, fullName: e.target.value})}
                 className="w-full p-2 border rounded"
+                placeholder="Your full name"
                 required
               />
             </div>
@@ -271,6 +323,7 @@ export default function LinkdSearchPage() {
                 value={userProfile.location}
                 onChange={(e) => setUserProfile({...userProfile, location: e.target.value})}
                 className="w-full p-2 border rounded"
+                placeholder="e.g., Los Angeles, CA"
                 required
               />
             </div>
@@ -284,6 +337,7 @@ export default function LinkdSearchPage() {
                 value={userProfile.clubs.join(', ')}
                 onChange={(e) => handleArrayInput('clubs', e.target.value)}
                 className="w-full p-2 border rounded"
+                placeholder="e.g., Robotics Club, AI Society"
                 required
               />
             </div>
@@ -297,6 +351,7 @@ export default function LinkdSearchPage() {
                 value={userProfile.societies.join(', ')}
                 onChange={(e) => handleArrayInput('societies', e.target.value)}
                 className="w-full p-2 border rounded"
+                placeholder="e.g., Phi Beta Kappa, Tau Beta Pi"
                 required
               />
             </div>
@@ -315,6 +370,7 @@ export default function LinkdSearchPage() {
                 value={userObjective}
                 onChange={(e) => setUserObjective(e.target.value)}
                 className="w-full p-2 border rounded h-24"
+                placeholder="Describe what you're trying to accomplish, e.g., 'I want to connect with software engineers at Google for internship opportunities'"
                 required
               />
             </div>
