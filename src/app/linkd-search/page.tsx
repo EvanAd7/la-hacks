@@ -16,6 +16,10 @@ export default function LinkdSearchPage() {
   const [results, setResults] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [generatedQuery, setGeneratedQuery] = useState<string | null>(null);
+  const [selectedProfiles, setSelectedProfiles] = useState<any[]>([]);
+  const [generatingMessages, setGeneratingMessages] = useState(false);
+  const [messages, setMessages] = useState<any[]>([]);
+  const [messageError, setMessageError] = useState<string | null>(null);
   
   // Form state
   const [userProfile, setUserProfile] = useState<UserProfile>({
@@ -114,6 +118,95 @@ export default function LinkdSearchPage() {
     const updatedSchools = [...additionalSchools];
     updatedSchools.splice(index, 1);
     setAdditionalSchools(updatedSchools);
+  };
+  
+  const handleGenerateMessages = async () => {
+    if (selectedProfiles.length === 0) {
+      setMessageError("Please select at least one profile to generate a message");
+      return;
+    }
+    
+    setMessageError(null);
+    setGeneratingMessages(true);
+    setMessages([]);
+    
+    try {
+      const response = await fetch('/api/generate-messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userProfile,
+          userObjective,
+          selectedProfiles,
+          bulkGenerate: selectedProfiles.length > 1
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (data.error) {
+        setMessageError(data.error);
+      } else if (data.success) {
+        if (Array.isArray(data.results)) {
+          setMessages(data.results);
+        } else {
+          setMessages([data.results]);
+        }
+      }
+    } catch (err: any) {
+      setMessageError(err.message || 'An error occurred generating messages');
+    } finally {
+      setGeneratingMessages(false);
+    }
+  };
+  
+  const handleAutoGenerateAllMessages = async () => {
+    if (!results || !results.results || results.results.length === 0) {
+      setMessageError("No profiles found to generate messages for");
+      return;
+    }
+    
+    setMessageError(null);
+    setGeneratingMessages(true);
+    setMessages([]);
+    
+    try {
+      const response = await fetch('/api/generate-messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userProfile,
+          userObjective,
+          autoGenerateAll: true,
+          allProfiles: results.results
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (data.error) {
+        setMessageError(data.error);
+      } else if (data.success && data.filePath) {
+        // Navigate to the messages page
+        window.location.href = `/messages/${data.filePath.split('/').pop()}`;
+      }
+    } catch (err: any) {
+      setMessageError(err.message || 'An error occurred generating messages');
+    } finally {
+      setGeneratingMessages(false);
+    }
+  };
+  
+  const toggleProfileSelection = (profile: any) => {
+    if (selectedProfiles.some(p => p.profile.id === profile.profile.id)) {
+      setSelectedProfiles(selectedProfiles.filter(p => p.profile.id !== profile.profile.id));
+    } else {
+      setSelectedProfiles([...selectedProfiles, profile]);
+    }
   };
   
   return (
@@ -314,42 +407,160 @@ export default function LinkdSearchPage() {
       
       {results && (
         <div className="bg-gray-50 p-4 rounded-lg">
-          <h2 className="text-xl font-semibold mb-4">Search Results</h2>
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-semibold">Search Results</h2>
+            <div className="flex space-x-2">
+              <button
+                type="button"
+                onClick={handleAutoGenerateAllMessages}
+                disabled={!results || !results.results || results.results.length === 0 || generatingMessages}
+                className={`px-3 py-1 text-sm rounded ${
+                  !results || !results.results || results.results.length === 0 || generatingMessages
+                    ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                    : 'bg-green-100 text-green-800 hover:bg-green-200'
+                }`}
+              >
+                Auto-Generate All Messages
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedProfiles(results.results || [])}
+                className="px-3 py-1 text-sm bg-blue-100 text-blue-800 rounded hover:bg-blue-200"
+              >
+                Select All
+              </button>
+              <button
+                type="button"
+                onClick={() => setSelectedProfiles([])}
+                className="px-3 py-1 text-sm bg-gray-100 text-gray-800 rounded hover:bg-gray-200"
+              >
+                Clear Selection
+              </button>
+            </div>
+          </div>
           
           {results.results && results.results.length > 0 ? (
-            <div className="space-y-4">
-              {results.results.map((user: any, index: number) => (
-                <div key={index} className="bg-white p-4 rounded border">
-                  <div className="flex items-center gap-4">
-                    {user.profile.profile_picture_url && (
-                      <img 
-                        src={user.profile.profile_picture_url} 
-                        alt={user.profile.name}
-                        className="w-16 h-16 rounded-full object-cover"
-                      />
-                    )}
-                    <div>
-                      <h3 className="font-bold text-lg">{user.profile.name}</h3>
-                      <p className="text-gray-600">{user.profile.headline}</p>
-                      <p className="text-sm text-gray-500">{user.profile.location}</p>
-                      {user.profile.linkedin_url && (
-                        <a 
-                          href={user.profile.linkedin_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-600 hover:underline text-sm"
-                        >
-                          View LinkedIn Profile
-                        </a>
-                      )}
+            <>
+              <div className="space-y-4 mb-6">
+                {results.results.map((user: any, index: number) => {
+                  const isSelected = selectedProfiles.some(p => p.profile.id === user.profile.id);
+                  
+                  return (
+                    <div 
+                      key={index} 
+                      className={`bg-white p-4 rounded border transition-colors ${
+                        isSelected ? 'border-blue-500 bg-blue-50' : ''
+                      }`}
+                    >
+                      <div className="flex items-start gap-4">
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={() => toggleProfileSelection(user)}
+                          className="mt-1 h-5 w-5 text-blue-600 rounded"
+                        />
+                        <div className="flex flex-1 items-center gap-4">
+                          {user.profile.profile_picture_url && (
+                            <img 
+                              src={user.profile.profile_picture_url} 
+                              alt={user.profile.name}
+                              className="w-16 h-16 rounded-full object-cover"
+                            />
+                          )}
+                          <div className="flex-1">
+                            <h3 className="font-bold text-lg">{user.profile.name}</h3>
+                            <p className="text-gray-600">{user.profile.headline}</p>
+                            <p className="text-sm text-gray-500">{user.profile.location}</p>
+                            {user.profile.linkedin_url && (
+                              <a 
+                                href={user.profile.linkedin_url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 hover:underline text-sm"
+                              >
+                                View LinkedIn Profile
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+                  );
+                })}
+              </div>
+              
+              <div className="mt-4">
+                <button
+                  type="button"
+                  onClick={handleGenerateMessages}
+                  disabled={selectedProfiles.length === 0 || generatingMessages}
+                  className={`w-full p-3 rounded font-medium text-white ${
+                    selectedProfiles.length === 0 || generatingMessages
+                      ? 'bg-green-300'
+                      : 'bg-green-600 hover:bg-green-700'
+                  }`}
+                >
+                  {generatingMessages
+                    ? 'Generating Messages...'
+                    : `Generate Outreach ${selectedProfiles.length > 1 ? 'Messages' : 'Message'} (${selectedProfiles.length} selected)`}
+                </button>
+              </div>
+            </>
           ) : (
             <p>No results found.</p>
           )}
+        </div>
+      )}
+      
+      {messageError && (
+        <div className="mt-6 bg-red-50 p-4 rounded-lg border border-red-200">
+          <h2 className="text-lg font-semibold text-red-700 mb-2">Error Generating Messages:</h2>
+          <p>{messageError}</p>
+        </div>
+      )}
+      
+      {messages.length > 0 && (
+        <div className="mt-6 bg-green-50 p-4 rounded-lg">
+          <h2 className="text-xl font-semibold mb-4">Generated Outreach Messages</h2>
+          
+          <div className="space-y-6">
+            {messages.map((item, index) => (
+              <div key={index} className="bg-white p-4 rounded border">
+                <div className="flex items-center gap-3 mb-3 pb-3 border-b">
+                  {item.profile.profile.profile_picture_url && (
+                    <img 
+                      src={item.profile.profile.profile_picture_url} 
+                      alt={item.profile.profile.name}
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                  )}
+                  <div>
+                    <h3 className="font-medium">{item.profile.profile.name}</h3>
+                    <p className="text-sm text-gray-600">{item.profile.profile.headline}</p>
+                  </div>
+                </div>
+                
+                <div className="mb-3">
+                  <h4 className="font-medium text-sm text-gray-700 mb-2">Outreach Message:</h4>
+                  <div className="bg-gray-50 p-3 rounded whitespace-pre-wrap text-sm">
+                    {item.message}
+                  </div>
+                </div>
+                
+                <div className="flex justify-end gap-2">
+                  <button
+                    onClick={() => {
+                      navigator.clipboard.writeText(item.message);
+                      alert('Message copied to clipboard!');
+                    }}
+                    className="px-3 py-1 text-sm bg-blue-100 text-blue-800 rounded hover:bg-blue-200"
+                  >
+                    Copy to Clipboard
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
