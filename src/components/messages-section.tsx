@@ -36,11 +36,11 @@ export function MessagesSection({
           Here are the personalized messages for each contact
         </p>
         
-        <div className="mt-4">
+        <div className="mt-4 flex items-center justify-center space-x-6">
           <Button 
             onClick={onSendAll} 
             disabled={isSendingMessages || profiles.length === 0}
-            className="mx-auto"
+            className="px-8 py-3 text-lg"
           >
             {isSendingMessages ? "Sending..." : "Send All Messages"}
           </Button>

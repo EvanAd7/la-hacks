@@ -19,7 +19,6 @@
     "@radix-ui/react-select": "^2.2.2",
     "@radix-ui/react-separator": "^1.1.4",
     "@radix-ui/react-slot": "^1.2.0",
-    "@types/animejs": "^3.1.13",
     "animejs": "^4.0.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -37,6 +36,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.4",
+    "@types/animejs": "^3.1.13",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

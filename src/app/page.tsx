@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Navigation } from "@/components/navigation";
 import { SearchForm } from "@/components/search-form";
 import { ProfilesSection } from "@/components/profiles-section";
@@ -78,11 +78,167 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [userProfile, setUserProfile] = useState(getUserProfileFromStorage());
   const [alumniOnly, setAlumniOnly] = useState<boolean>(true);
+  
+  // Simple bubble state type
+  const [bubbles, setBubbles] = useState<Array<{id: number, left: number, size: number, duration: number}>>([]);
+  const bubblesContainerRef = useRef<HTMLDivElement>(null);
+
+  // Add a state to track if the component is mounted on the client
+  const [isMounted, setIsMounted] = useState(false);
+  
+  // References for animation elements
+  const brewTextRef = useRef<HTMLSpanElement>(null);
+  const restOfTextRef = useRef<HTMLSpanElement>(null);
+  const subtitleRef = useRef<HTMLParagraphElement>(null);
+
+  // Set isMounted to true once the component is mounted on client
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Load user profile from localStorage when component mounts
   useEffect(() => {
     setUserProfile(getUserProfileFromStorage());
   }, []);
+
+  // Simple animation effect without anime.js
+  useEffect(() => {
+    if (!isMounted) return;
+    
+    // Initial state - hidden
+    if (brewTextRef.current) {
+      brewTextRef.current.style.opacity = "0";
+      brewTextRef.current.style.transform = "translateY(40px)";
+    }
+    
+    if (restOfTextRef.current) {
+      restOfTextRef.current.style.opacity = "0";
+      restOfTextRef.current.style.transform = "translateY(40px)";
+    }
+    
+    if (subtitleRef.current) {
+      subtitleRef.current.style.opacity = "0";
+    }
+    
+    let animationHasRun = false;
+    try {
+      animationHasRun = Boolean(sessionStorage.getItem('animationHasRun'));
+    } catch (error) {
+      console.error('Error accessing sessionStorage:', error);
+    }
+    
+    if (!animationHasRun) {
+      // Simple CSS transitions instead of anime.js
+      setTimeout(() => {
+        if (brewTextRef.current) {
+          brewTextRef.current.style.transition = "opacity 0.8s ease-out, transform 0.8s ease-out";
+          brewTextRef.current.style.opacity = "1";
+          brewTextRef.current.style.transform = "translateY(0)";
+        }
+      }, 300);
+      
+      setTimeout(() => {
+        if (restOfTextRef.current) {
+          restOfTextRef.current.style.transition = "opacity 0.8s ease-out, transform 0.8s ease-out";
+          restOfTextRef.current.style.opacity = "1";
+          restOfTextRef.current.style.transform = "translateY(0)";
+        }
+      }, 600);
+      
+      setTimeout(() => {
+        if (subtitleRef.current) {
+          subtitleRef.current.style.transition = "opacity 0.8s ease-out";
+          subtitleRef.current.style.opacity = "1";
+        }
+        
+        // Animate letters with CSS
+        document.querySelectorAll('.brew-letter').forEach((letter, index) => {
+          setTimeout(() => {
+            (letter as HTMLElement).style.transition = "all 0.5s ease-out";
+            (letter as HTMLElement).style.opacity = "1";
+            (letter as HTMLElement).style.transform = "scale(1) translateY(0) rotate(0)";
+          }, 600 + (index * 120));
+        });
+      }, 900);
+      
+      // Create a simple set of bubbles
+      const newBubbles = [];
+      // Create more bubbles for a fuller effect
+      for (let i = 0; i < 30; i++) { 
+        // More variation in duration for natural movement
+        const duration = 5 + (Math.random() * 5);
+        
+        newBubbles.push({
+          id: i,
+          // Randomize left position
+          left: Math.random() * 100,
+          // Larger sizes for more prominent bubbles
+          size: 6 + Math.random() * 10,
+          // Animation duration
+          duration: duration
+        });
+      }
+      setBubbles(newBubbles);
+      
+      // Show bubbles
+      setTimeout(() => {
+        if (bubblesContainerRef.current) {
+          bubblesContainerRef.current.style.opacity = "1";
+        }
+      }, 1200);
+      
+      // Mark animation as run
+      try {
+        sessionStorage.setItem('animationHasRun', 'true');
+      } catch (error) {
+        console.error('Error writing to sessionStorage:', error);
+      }
+    } else {
+      // Just show everything immediately
+      if (brewTextRef.current) {
+        brewTextRef.current.style.opacity = "1";
+        brewTextRef.current.style.transform = "translateY(0)";
+      }
+      
+      if (restOfTextRef.current) {
+        restOfTextRef.current.style.opacity = "1";
+        restOfTextRef.current.style.transform = "translateY(0)";
+      }
+      
+      if (subtitleRef.current) {
+        subtitleRef.current.style.opacity = "1";
+      }
+      
+      document.querySelectorAll('.brew-letter').forEach(letter => {
+        (letter as HTMLElement).style.opacity = "1";
+        (letter as HTMLElement).style.transform = "scale(1)";
+      });
+      
+      // Show bubbles container
+      if (bubblesContainerRef.current) {
+        bubblesContainerRef.current.style.opacity = "1";
+      }
+      
+      // Create a simple set of bubbles
+      const newBubbles = [];
+      // Create more bubbles for a fuller effect
+      for (let i = 0; i < 30; i++) { 
+        // More variation in duration for natural movement
+        const duration = 5 + (Math.random() * 5);
+        
+        newBubbles.push({
+          id: i,
+          // Randomize left position
+          left: Math.random() * 100,
+          // Larger sizes for more prominent bubbles
+          size: 6 + Math.random() * 10,
+          // Animation duration
+          duration: duration
+        });
+      }
+      setBubbles(newBubbles);
+    }
+  }, [isMounted]);
 
   // Update messages whenever generatedMessages or profiles change
   useEffect(() => {
@@ -437,10 +593,54 @@ export default function Home() {
       {/* Main Content */}
       <div className="pt-12 px-4 sm:px-6 md:px-8 pb-20">
         <div className="w-full max-w-2xl mx-auto space-y-6">
-          <h1 className="text-3xl font-bold text-center">Alumni Connect</h1>
-          <p className="text-center text-muted-foreground">
+          <div className="relative">
+            {/* Bubbles Container - Only render on client side and position it BEHIND the text */}
+            {isMounted && (
+              <div 
+                ref={bubblesContainerRef}
+                className="absolute inset-0 bottom-0 top-0 opacity-0 pointer-events-none overflow-hidden"
+                style={{ 
+                  zIndex: 0,
+                  height: '250%', 
+                  width: '100%',
+                  top: '-50%'
+                }}
+              >
+                {bubbles.map((bubble, index) => (
+                  <div
+                    key={bubble.id}
+                    className="brewing-bubble absolute bottom-0 rounded-full"
+                    style={{
+                      // Distribute bubbles more evenly
+                      left: index < 15 ? `${15 + (index * 5)}%` : `${bubble.left}%`,
+                      width: `${bubble.size}px`,
+                      height: `${bubble.size}px`,
+                      // Apply randomized duration to both animations for natural movement
+                      animationDuration: `${bubble.duration}s, ${bubble.duration}s`,
+                      // Stagger animation starts
+                      animationDelay: `${index * 0.3}s`
+                    }}
+                  />
+                ))}
+              </div>
+            )}
+            
+            {/* Title with higher z-index to ensure it's above bubbles */}
+            <h1 className="text-5xl font-bold text-center tracking-tight relative" style={{ zIndex: 1 }}>
+              <span ref={brewTextRef} className="text-primary inline-block">
+                <span className="brew-letter inline-block opacity-0" style={{ transform: "scale(0.5) translateY(20px) rotate(-10deg)" }}>B</span>
+                <span className="brew-letter inline-block opacity-0" style={{ transform: "scale(0.5) translateY(20px) rotate(-10deg)" }}>R</span>
+                <span className="brew-letter inline-block opacity-0" style={{ transform: "scale(0.5) translateY(20px) rotate(-10deg)" }}>E</span>
+                <span className="brew-letter inline-block opacity-0" style={{ transform: "scale(0.5) translateY(20px) rotate(-10deg)" }}>W</span>
+              </span>
+              <span ref={restOfTextRef} className="inline-block"> up your first conversation...</span>
+            </h1>
+          </div>
+          
+          <p ref={subtitleRef} className="text-center text-muted-foreground relative" style={{ zIndex: 1 }}>
             Find and connect with alumni from your school
           </p>
+          
           <SearchForm 
             prompt={prompt}
             setPrompt={setPrompt}

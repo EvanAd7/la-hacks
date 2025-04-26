@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useState, useEffect } from "react";
+import { Navigation } from "@/components/navigation";
 
 export default function ProfilePage() {
   // State management for all profile fields
@@ -178,23 +179,7 @@ export default function ProfilePage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      {/* Minimalistic Navbar */}
-      <nav className="border-b border-border/40 backdrop-blur-sm sticky top-0 z-10">
-        <div className="w-full grid grid-cols-2 divide-x divide-border/30">
-          <Link
-            href="/"
-            className="py-5 text-center text-sm font-medium text-foreground/80 hover:text-primary hover:bg-muted/30 transition-colors"
-          >
-            Send
-          </Link>
-          <Link
-            href="/profile"
-            className="py-5 text-center text-sm font-medium text-primary hover:bg-muted/30 transition-colors"
-          >
-            Profile
-          </Link>
-        </div>
-      </nav>
+      <Navigation />
 
       {/* Profile Page Content */}
       <div className="flex items-center justify-center flex-1 p-6">
