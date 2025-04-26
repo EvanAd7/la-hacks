@@ -9,7 +9,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { searchUsers } from "@/services/linkd-api";
+import { StagehandEmbed } from "@/components/stagehand-embed";import { searchUsers } from "@/services/linkd-api";
 import { generateOutreachMessage } from "@/services/message-generator";
 
 // Define types for the API response
@@ -724,7 +724,7 @@ export default function Home() {
           <p className="text-center text-muted-foreground">
             Find and connect with alumni from your school
           </p>
-          
+          <StagehandEmbed />
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="flex flex-col space-y-2">
               <Input
