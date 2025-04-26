@@ -1,13 +1,11 @@
 import { GoogleGenAI } from "@google/genai";
-import { UserResult } from "@/types";
-import * as fs from 'fs';
-import * as path from 'path';
+import { UserResult } from "@/services/linkd-api";
 
 // Interface for the user's profile information
 interface UserProfile {
   universityName: string;
   fullName: string;
-  gradeYear: string;
+  year: string;
   clubs: string[];
   societies: string[];
   location: string;
@@ -41,6 +39,8 @@ export async function generateOutreachMessage(
   userObjective: string,
   targetProfile: UserResult
 ): Promise<string> {
+  console.log(`[${new Date().toISOString()}] [message-generator] Generating message for ${targetProfile.profile.name}`);
+  
   try {
     const response = await ai.models.generateContent({
       model: "gemini-2.0-flash",
@@ -50,7 +50,7 @@ export async function generateOutreachMessage(
       Here's information about the sender:
       - Name: ${userProfile.fullName}
       - University: ${userProfile.universityName}
-      - Year/Grade: ${userProfile.gradeYear}
+      - Year/Grade: ${userProfile.year}
       - Clubs: ${userProfile.clubs.join(', ')}
       - Societies: ${userProfile.societies.join(', ')}
       - Location: ${userProfile.location}
@@ -88,9 +88,11 @@ export async function generateOutreachMessage(
     });
 
     // Extract the generated message from the response
-    return response.text || "Failed to generate a message. Please try again.";
+    const message = response.text || "Failed to generate a message. Please try again.";
+    
+    return message;
   } catch (error) {
-    console.error("Error generating outreach message:", error);
+    console.error(`[${new Date().toISOString()}] [message-generator] Error:`, error);
     throw error;
   }
 }
@@ -108,10 +110,14 @@ export async function generateBulkOutreachMessages(
   userObjective: string,
   targetProfiles: UserResult[]
 ): Promise<Array<{profile: UserResult, message: string}>> {
+  console.log(`[${new Date().toISOString()}] [message-generator] Generating messages for ${targetProfiles.length} profiles`);
+  
   const results = [];
   
   // Generate messages for each profile (sequentially to avoid rate limits)
-  for (const profile of targetProfiles) {
+  for (let i = 0; i < targetProfiles.length; i++) {
+    const profile = targetProfiles[i];
+    
     try {
       const message = await generateOutreachMessage(userProfile, userObjective, profile);
       results.push({
@@ -119,7 +125,7 @@ export async function generateBulkOutreachMessages(
         message
       });
     } catch (error) {
-      console.error(`Error generating message for ${profile.profile.name}:`, error);
+      console.error(`[${new Date().toISOString()}] [message-generator] Error generating message for ${profile.profile.name}:`, error);
       results.push({
         profile,
         message: "Failed to generate a personalized message."
@@ -129,46 +135,3 @@ export async function generateBulkOutreachMessages(
   
   return results;
 }
-
-/**
- * Save generated messages to a JSON file
- * 
- * @param userProfile - The sender's profile
- * @param userObjective - The user's objective
- * @param messagesData - Array of profile/message pairs
- * @returns Path to the saved file
- */
-export async function saveMessagesToFile(
-  userProfile: UserProfile,
-  userObjective: string,
-  messagesData: Array<{profile: UserResult, message: string}>
-): Promise<string> {
-  try {
-    // Create the messages collection with only linkedinURL and coldMessage
-    const messagesCollection: MessagesCollection = {
-      messages: messagesData.map(item => ({
-        linkedinURL: item.profile.profile.linkedin_url || "",
-        coldMessage: item.message
-      }))
-    };
-    
-    // Create directory if it doesn't exist
-    const dirPath = path.join(process.cwd(), 'public', 'messages');
-    if (!fs.existsSync(dirPath)) {
-      fs.mkdirSync(dirPath, { recursive: true });
-    }
-    
-    // Generate a filename based on timestamp
-    const filename = `messages-${Date.now()}.json`;
-    const filePath = path.join(dirPath, filename);
-    
-    // Write the file
-    fs.writeFileSync(filePath, JSON.stringify(messagesCollection, null, 2));
-    
-    // Return the public path
-    return `/messages/${filename}`;
-  } catch (error) {
-    console.error("Error saving messages to file:", error);
-    throw error;
-  }
-} 

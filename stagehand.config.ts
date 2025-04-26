@@ -7,7 +7,7 @@ const StagehandConfig: ConstructorParams = {
   // LLM configuration
   modelName: "gemini-2.0-flash" /* Name of the model to use */,
   modelClientOptions: {
-    apiKey: process.env.GOOGLE_API_KEY,
+    apiKey: process.env.GEMINI_API_KEY,
   } /* Configuration options for the model client */,
 
   // Browser configuration

@@ -15,7 +15,9 @@ interface UserProfile {
 }
 
 // Function to generate LinkedIn query
-export async function generateLinkedInQuery(userProfile: UserProfile, userObjective: string) {
+export async function generateLinkedInQuery(userProfile: any, userObjective: string) {
+  console.log(`[${new Date().toISOString()}] [gemini-api] Generating search query for: "${userObjective}"`);
+  
   try {
     const response = await ai.models.generateContent({
       model: "gemini-2.0-flash",
@@ -40,27 +42,13 @@ export async function generateLinkedInQuery(userProfile: UserProfile, userObject
       That is, remove any quotations marks, they are not needed.
       `,
     });
-    return response.text;
+    
+    const generatedQuery = response.text;
+    console.log(`[${new Date().toISOString()}] [gemini-api] Generated query: "${generatedQuery}"`);
+    
+    return generatedQuery;
   } catch (error) {
-    console.error("Error generating LinkedIn query:", error);
+    console.error(`[${new Date().toISOString()}] [gemini-api] Error:`, error);
     throw error;
   }
 }
-// Example usage
-async function main() {
-  const sampleProfile: UserProfile = {
-    universityName: "USC",
-    fullName: "John Doe",
-    gradeYear: "Freshman",
-    clubs: ["Lavalab", "Startup Incubator"],
-    societies: ["BAP", "Marketing Association"],
-    location: "Los Angeles"
-  };
-  
-  const sampleObjective = "I want to find recruiters who work at Google";
-  
-  const result = await generateLinkedInQuery(sampleProfile, sampleObjective);
-  console.log("Generated Query:", result);
-}
-
-main();

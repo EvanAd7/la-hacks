@@ -1,4 +1,3 @@
-import { SearchParams, SearchResponse } from '@/types/index';
 import { generateLinkedInQuery } from './gemini-api';
 
 const API_BASE_URL = 'https://search.linkd.inc/api';
@@ -14,39 +13,61 @@ interface UserProfile {
   location: string;
 }
 
-// Function to search users using Gemini-generated query
-export const searchUsersWithAI = async (
-  userProfile: UserProfile, 
-  userObjective: string, 
-  limit = 10,
-  additionalSchools?: string[]
-): Promise<SearchResponse> => {
-  try {
-    // Generate the query using Gemini AI
-    const aiGeneratedQuery = await generateLinkedInQuery(userProfile, userObjective);
-    
-    // Create a schools array that includes the user's university
-    const schools = [userProfile.universityName];
-    
-    // Add any additional schools if provided
-    if (additionalSchools && additionalSchools.length > 0) {
-      schools.push(...additionalSchools);
-    }
-    
-    // Use the generated query to search Linkd API
-    return await searchUsers({
-      query: aiGeneratedQuery || "", // Ensure it's not undefined
-      limit,
-      school: schools
-    });
-  } catch (error) {
-    console.error("Error in AI-powered search:", error);
-    throw error;
-  }
-};
+// Types
+export interface Experience {
+  title: string;
+  company_name: string;
+  start_date: string;
+  end_date: string | null;
+  description: string;
+  location: string;
+  company_logo: string;
+}
+
+export interface Education {
+  degree: string;
+  field_of_study: string;
+  school_name: string;
+  start_date: string;
+  end_date: string;
+  description: string;
+  school_logo: string;
+}
+
+export interface Profile {
+  id: string;
+  name: string;
+  location: string;
+  headline: string;
+  description: string;
+  title: string;
+  profile_picture_url: string;
+  linkedin_url: string;
+}
+
+export interface UserResult {
+  profile: Profile;
+  experience: Experience[];
+  education: Education[];
+}
+
+export interface SearchResponse {
+  results: UserResult[];
+  total: number;
+  query: string;
+  error: string | null;
+}
+
+export interface SearchParams {
+  query: string;
+  limit?: number;
+  school?: string[];
+}
 
 // Function to search users
 export const searchUsers = async (params: SearchParams): Promise<SearchResponse> => {
+  console.log(`[${new Date().toISOString()}] [linkd-api] Searching with params:`, params);
+  
   try {
     const { query, limit = 10, school } = params;
     
@@ -70,6 +91,8 @@ export const searchUsers = async (params: SearchParams): Promise<SearchResponse>
     // Add auth token if available
     if (authToken) {
       headers['Authorization'] = `Bearer ${authToken}`;
+    } else {
+      console.warn(`[${new Date().toISOString()}] [linkd-api] Warning: No auth token provided`);
     }
     
     // Make the request
@@ -78,9 +101,6 @@ export const searchUsers = async (params: SearchParams): Promise<SearchResponse>
       {
         method: 'GET',
         headers,
-        next: {
-          revalidate: 60, // Optional: Use Next.js revalidation (adjust as needed)
-        },
       }
     );
     
@@ -88,8 +108,7 @@ export const searchUsers = async (params: SearchParams): Promise<SearchResponse>
     if (!response.ok) {
       // Handle 401 specifically
       if (response.status === 401) {
-        const errorData = await response.json().catch(() => ({}));
-        const errorDetail = errorData?.detail || "Invalid or expired API key";
+        const errorDetail = "Invalid or expired API key";
         throw new Error(errorDetail);
       }
       
@@ -108,10 +127,14 @@ export const searchUsers = async (params: SearchParams): Promise<SearchResponse>
     }
     
     // Parse and return successful response
-    return await response.json() as SearchResponse;
+    const result = await response.json() as SearchResponse;
+    console.log(`[${new Date().toISOString()}] [linkd-api] Found ${result.results.length} profiles`);
+    
+    return result;
     
   } catch (error) {
-    // Handle fetch errors or errors thrown above
+    console.error(`[${new Date().toISOString()}] [linkd-api] Error:`, error);
+    
     if (error instanceof Error) {
       throw error;
     }

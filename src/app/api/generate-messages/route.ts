@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
-import { generateOutreachMessage, generateBulkOutreachMessages, saveMessagesToFile } from '@/services/message-generator';
-import { UserResult } from '@/types';
+import { generateOutreachMessage, generateBulkOutreachMessages } from '@/services/message-generator';
+import { UserResult } from '@/services/linkd-api';
 
 export async function POST(request: Request) {
+  console.log(`[${new Date().toISOString()}] [generate-messages API] Request received`);
+  
   try {
     // Parse request body
     const body = await request.json();
@@ -10,49 +12,23 @@ export async function POST(request: Request) {
       userProfile, 
       userObjective, 
       selectedProfiles, 
-      bulkGenerate = false,
-      autoGenerateAll = false,
-      allProfiles = []
+      bulkGenerate = false
     } = body;
     
-    // Validate required fields for normal message generation
+    // Validate required fields
     if (!userProfile || !userObjective) {
+      console.log(`[${new Date().toISOString()}] [generate-messages API] Missing required fields`);
       return NextResponse.json(
         { error: 'userProfile and userObjective are required' },
         { status: 400 }
       );
     }
     
-    // For auto generation mode, we use all profiles
-    if (autoGenerateAll) {
-      if (!Array.isArray(allProfiles) || allProfiles.length === 0) {
-        return NextResponse.json(
-          { error: 'No profiles available for automatic message generation' },
-          { status: 400 }
-        );
-      }
-      
-      // Generate messages for all profiles
-      const results = await generateBulkOutreachMessages(
-        userProfile,
-        userObjective,
-        allProfiles as UserResult[]
-      );
-      
-      // Save messages to a JSON file
-      const filePath = await saveMessagesToFile(userProfile, userObjective, results);
-      
-      return NextResponse.json({
-        success: true,
-        results,
-        filePath
-      });
-    }
-    
-    // Regular message generation (for selected profiles)
-    if (!Array.isArray(selectedProfiles)) {
+    // Validate profiles
+    if (!Array.isArray(selectedProfiles) || selectedProfiles.length === 0) {
+      console.log(`[${new Date().toISOString()}] [generate-messages API] No profiles selected`);
       return NextResponse.json(
-        { error: 'selectedProfiles must be an array' },
+        { error: 'At least one profile must be selected' },
         { status: 400 }
       );
     }
@@ -69,13 +45,6 @@ export async function POST(request: Request) {
       );
     } else {
       // Generate a message for just the first selected profile
-      if (selectedProfiles.length === 0) {
-        return NextResponse.json(
-          { error: 'At least one profile must be selected' },
-          { status: 400 }
-        );
-      }
-      
       const message = await generateOutreachMessage(
         userProfile,
         userObjective,
@@ -93,11 +62,11 @@ export async function POST(request: Request) {
       results
     });
   } catch (error: any) {
-    console.error('Error generating messages:', error);
+    console.error(`[${new Date().toISOString()}] [generate-messages API] Error:`, error);
     
     return NextResponse.json(
       { error: error.message || 'An error occurred while generating messages' },
       { status: 500 }
     );
   }
-} 
+}

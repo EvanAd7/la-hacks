@@ -1,79 +1,50 @@
 import { NextResponse } from 'next/server';
 import { generateLinkedInQuery } from '@/services/gemini-api';
 
-// Support for GET requests (sample data)
-export async function GET() {
-  try {
-    // Sample test data
-    const sampleProfile = {
-      universityName: "USC",
-      fullName: "John Doe",
-      gradeYear: "Freshman",
-      clubs: ["Lavalab", "Startup Incubator"],
-      societies: ["BAP", "Marketing Association"],
-      location: "Los Angeles"
-    };
-    
-    const sampleObjective = "I want to cold email senior developers who work at Google about setting up coffee chats";
-    
-    // Generate the query using our service
-    const generatedQuery = await generateLinkedInQuery(sampleProfile, sampleObjective);
-    
-    return NextResponse.json({ 
-      success: true, 
-      text: generatedQuery,
-      sampleData: {
-        profile: sampleProfile,
-        objective: sampleObjective
-      }
-    });
-  } catch (error: unknown) {
-    console.error('Error calling Gemini API:', error);
-    const errorMessage = error instanceof Error 
-      ? error.message 
-      : 'Unknown error occurred';
-    
-    return NextResponse.json({ 
-      success: false, 
-      error: errorMessage 
-    }, { status: 500 });
-  }
-}
-
 // Support for POST requests (user-provided data)
 export async function POST(request: Request) {
+  console.log(`[${new Date().toISOString()}] [gemini-test API] Request received`);
+  const startTime = performance.now();
+  
   try {
     // Parse request body
     const body = await request.json();
     const { userProfile, userObjective } = body;
     
+    console.log(`[${new Date().toISOString()}] [gemini-test API] Request parsed. Objective: "${userObjective}"`);
+    
     // Validate required fields
     if (!userProfile || !userObjective) {
+      console.log(`[${new Date().toISOString()}] [gemini-test API] Missing required fields`);
       return NextResponse.json(
-        { 
-          success: false,
-          error: 'userProfile and userObjective are required' 
-        },
+        { error: 'userProfile and userObjective are required' },
         { status: 400 }
       );
     }
     
-    // Generate the query using our service
-    const generatedQuery = await generateLinkedInQuery(userProfile, userObjective);
+    // Generate query using Gemini API
+    console.log(`[${new Date().toISOString()}] [gemini-test API] Calling generateLinkedInQuery`);
+    const queryStartTime = performance.now();
     
-    return NextResponse.json({ 
-      success: true, 
-      text: generatedQuery
+    const text = await generateLinkedInQuery(userProfile, userObjective);
+    
+    const queryEndTime = performance.now();
+    console.log(`[${new Date().toISOString()}] [gemini-test API] Query generation completed in ${(queryEndTime - queryStartTime).toFixed(2)}ms`);
+    console.log(`[${new Date().toISOString()}] [gemini-test API] Generated query: "${text}"`);
+    
+    const endTime = performance.now();
+    console.log(`[${new Date().toISOString()}] [gemini-test API] Request completed in ${(endTime - startTime).toFixed(2)}ms`);
+    
+    return NextResponse.json({
+      success: true,
+      text
     });
-  } catch (error: unknown) {
-    console.error('Error calling Gemini API:', error);
-    const errorMessage = error instanceof Error 
-      ? error.message 
-      : 'Unknown error occurred';
+  } catch (error: any) {
+    console.error(`[${new Date().toISOString()}] [gemini-test API] Error:`, error);
     
-    return NextResponse.json({ 
-      success: false, 
-      error: errorMessage 
-    }, { status: 500 });
+    return NextResponse.json(
+      { error: error.message || 'An error occurred during query generation' },
+      { status: 500 }
+    );
   }
 } 
