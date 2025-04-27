@@ -23,6 +23,7 @@
 # misc
 .DS_Store
 *.pem
+cache.json
 
 # debug
 npm-debug.log*
@@ -40,10 +41,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-.cursorrules
-
 # auth data
 linkedin-auth-state.json
+gmail-auth-state.json
 
 # gif
 Loading Animation.gif
+
+.cursorrules
