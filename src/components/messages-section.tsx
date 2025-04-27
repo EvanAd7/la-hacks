@@ -31,7 +31,7 @@ export function MessagesSection({
   return (
     <div className="w-full max-w-4xl mx-auto mt-16 space-y-10">
       <div className="text-center">
-        <h2 className="text-2xl font-bold">Generated LinkedIn Messages</h2>
+        <h2 className="text-2xl font-bold">Generated Outreach Messages</h2>
         <p className="text-muted-foreground mt-2">
           Here are the personalized messages for each contact
         </p>

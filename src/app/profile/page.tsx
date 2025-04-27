@@ -8,6 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { useState, useEffect } from "react";
 import { Navigation } from "@/components/navigation";
+import { motion } from "framer-motion";
+
+// Create a motion variant of Card
+const MotionCard = motion(Card);
 
 export default function ProfilePage() {
   // State management for all profile fields
@@ -22,6 +26,16 @@ export default function ProfilePage() {
     dreamCompany: ""
   });
   const [isSaved, setIsSaved] = useState(false);
+
+  // Animation variants
+  const cardAnimationVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.5, ease: "easeOut" }
+    }
+  };
 
   const universities = [
     "American University",
@@ -163,11 +177,16 @@ export default function ProfilePage() {
       <div className="flex items-center justify-center flex-1 p-6">
         <div className="w-full max-w-4xl">
           {/* Profile Form Card */}
-          <Card className="w-full border-border/50 shadow-sm">
+          <MotionCard 
+            className="w-full border-border/50 shadow-sm"
+            initial="hidden"
+            animate="visible"
+            variants={cardAnimationVariants}
+          >
             <CardHeader className="space-y-1">
               <CardTitle className="text-2xl">Your Profile</CardTitle>
               <CardDescription>
-                Customize your profile to help create personalized cold emails
+                Customize your profile to help personalize our search
               </CardDescription>
             </CardHeader>
 
@@ -306,7 +325,7 @@ export default function ProfilePage() {
                 </p>
               )}
             </CardContent>
-          </Card>
+          </MotionCard>
         </div>
       </div>
     </div>

@@ -136,7 +136,7 @@ export default function Dashboard() {
         {/* Metrics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           <Card className="p-4 border border-border">
-            <h3 className="text-sm font-medium text-muted-foreground mb-1">Total Contacts</h3>
+            <h3 className="text-sm font-medium text-muted-foreground mb-1">Total Messages</h3>
             <p className="text-3xl font-bold">{totalContacts}</p>
           </Card>
 

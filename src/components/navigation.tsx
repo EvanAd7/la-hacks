@@ -58,14 +58,19 @@ export function Navigation() {
     }
   };
 
+  // Calculate background opacity based on scroll position
+  // Start with 0 opacity, gradually increase to 0.8 as user scrolls down 50px
+  const bgOpacity = Math.min(scrollPosition / 50, 1) * 0.8;
+  
   // Calculate border opacity based on scroll position
   // Start with 0 opacity, gradually increase to 1 as user scrolls down 50px
   const borderOpacity = Math.min(scrollPosition / 50, 1);
 
   return (
     <nav 
-      className="border-b backdrop-blur-sm sticky top-0 z-10 bg-white/80 transition-all duration-200"
+      className="border-b backdrop-blur-sm sticky top-0 z-10 transition-all duration-200"
       style={{ 
+        backgroundColor: `rgba(255, 255, 255, ${bgOpacity})`,
         borderColor: `rgba(var(--border-rgb), ${borderOpacity})` 
       }}
     >
@@ -106,17 +111,25 @@ export function Navigation() {
                   : "text-foreground/80 hover:text-primary"
               } hover:bg-muted/30 transition-colors`}
             >
-              Send
+              Brew
             </Link>
             <Link 
               href="/dashboard" 
-              className="px-3 py-2 rounded-md text-sm font-medium text-foreground/80 hover:text-primary hover:bg-muted/30 transition-colors"
+              className={`px-3 py-2 rounded-md text-sm font-medium ${
+                pathname === "/dashboard" 
+                  ? "text-primary"
+                  : "text-foreground/80 hover:text-primary"
+              } hover:bg-muted/30 transition-colors`}
             >
               Dashboard
             </Link>
             <Link 
               href="/explore" 
-              className="px-3 py-2 rounded-md text-sm font-medium text-foreground/80 hover:text-primary hover:bg-muted/30 transition-colors"
+              className={`px-3 py-2 rounded-md text-sm font-medium ${
+                pathname === "/explore" 
+                  ? "text-primary"
+                  : "text-foreground/80 hover:text-primary"
+              } hover:bg-muted/30 transition-colors`}
             >
               Explore
             </Link>

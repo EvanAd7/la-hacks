@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { Send } from "lucide-react";
 import { UserResult, Experience, Education } from "@/services/linkd-api";
 
 interface MessageCardProps {
@@ -106,6 +107,14 @@ export function MessageCard({
               onClick={onRegenerateMessage}
             >
               Regenerate
+            </Button>
+            <Button 
+              variant="default" 
+              size="sm"
+              className="bg-primary text-primary-foreground"
+            >
+              <Send className="mr-1 h-4 w-4" />
+              Send
             </Button>
           </div>
         </div>

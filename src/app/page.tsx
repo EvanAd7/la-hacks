@@ -8,6 +8,7 @@ import { MessagesSection } from "@/components/messages-section";
 import { UserResult } from "@/services/linkd-api";
 import { OutreachMessage, runLinkedInOutreach } from "@/app/stagehand/main";
 import Image from "next/image";
+import { motion, stagger, useAnimate } from "framer-motion";
 
 // Define the UserProfile interface
 interface UserProfile {
@@ -79,6 +80,7 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const [userProfile, setUserProfile] = useState(getUserProfileFromStorage());
   const [alumniOnly, setAlumniOnly] = useState<boolean>(true);
+  const [showBackground, setShowBackground] = useState(true);
   
   // Simple bubble state type
   const [bubbles, setBubbles] = useState<Array<{id: number, left: number, size: number, duration: number}>>([]);
@@ -87,10 +89,8 @@ export default function Home() {
   // Add a state to track if the component is mounted on the client
   const [isMounted, setIsMounted] = useState(false);
   
-  // References for animation elements
-  const brewTextRef = useRef<HTMLSpanElement>(null);
-  const restOfTextRef = useRef<HTMLSpanElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
+  // Animation scope for Framer Motion
+  const [scope, animate] = useAnimate();
 
   // Set isMounted to true once the component is mounted on client
   useEffect(() => {
@@ -102,144 +102,58 @@ export default function Home() {
     setUserProfile(getUserProfileFromStorage());
   }, []);
 
-  // Simple animation effect without anime.js
+  // Use Framer Motion to animate text
   useEffect(() => {
     if (!isMounted) return;
     
-    // Initial state - hidden
-    if (brewTextRef.current) {
-      brewTextRef.current.style.opacity = "0";
-      brewTextRef.current.style.transform = "translateY(40px)";
-    }
-    
-    if (restOfTextRef.current) {
-      restOfTextRef.current.style.opacity = "0";
-      restOfTextRef.current.style.transform = "translateY(40px)";
-    }
-    
-    if (subtitleRef.current) {
-      subtitleRef.current.style.opacity = "0";
-    }
-    
-    let animationHasRun = false;
+    // Reset animation state when component mounts
     try {
-      animationHasRun = Boolean(sessionStorage.getItem('animationHasRun'));
+      sessionStorage.removeItem('animationHasRun');
     } catch (error) {
       console.error('Error accessing sessionStorage:', error);
     }
-    
-    if (!animationHasRun) {
-      // Simple CSS transitions instead of anime.js
-      setTimeout(() => {
-        if (brewTextRef.current) {
-          brewTextRef.current.style.transition = "opacity 0.8s ease-out, transform 0.8s ease-out";
-          brewTextRef.current.style.opacity = "1";
-          brewTextRef.current.style.transform = "translateY(0)";
-        }
-      }, 300);
+
+    // Create bubbles
+    const newBubbles = [];
+    for (let i = 0; i < 30; i++) { 
+      const duration = 5 + (Math.random() * 5);
       
-      setTimeout(() => {
-        if (restOfTextRef.current) {
-          restOfTextRef.current.style.transition = "opacity 0.8s ease-out, transform 0.8s ease-out";
-          restOfTextRef.current.style.opacity = "1";
-          restOfTextRef.current.style.transform = "translateY(0)";
-        }
-      }, 600);
-      
-      setTimeout(() => {
-        if (subtitleRef.current) {
-          subtitleRef.current.style.transition = "opacity 0.8s ease-out";
-          subtitleRef.current.style.opacity = "1";
-        }
-        
-        // Animate letters with CSS
-        document.querySelectorAll('.brew-letter').forEach((letter, index) => {
-          setTimeout(() => {
-            (letter as HTMLElement).style.transition = "all 0.5s ease-out";
-            (letter as HTMLElement).style.opacity = "1";
-            (letter as HTMLElement).style.transform = "scale(1) translateY(0) rotate(0)";
-          }, 600 + (index * 120));
-        });
-      }, 900);
-      
-      // Create a simple set of bubbles
-      const newBubbles = [];
-      // Create more bubbles for a fuller effect
-      for (let i = 0; i < 30; i++) { 
-        // More variation in duration for natural movement
-        const duration = 5 + (Math.random() * 5);
-        
-        newBubbles.push({
-          id: i,
-          // Randomize left position
-          left: Math.random() * 100,
-          // Larger sizes for more prominent bubbles
-          size: 6 + Math.random() * 10,
-          // Animation duration
-          duration: duration
-        });
-      }
-      setBubbles(newBubbles);
-      
-      // Show bubbles
-      setTimeout(() => {
-        if (bubblesContainerRef.current) {
-          bubblesContainerRef.current.style.opacity = "1";
-        }
-      }, 1200);
-      
-      // Mark animation as run
-      try {
-        sessionStorage.setItem('animationHasRun', 'true');
-      } catch (error) {
-        console.error('Error writing to sessionStorage:', error);
-      }
-    } else {
-      // Just show everything immediately
-      if (brewTextRef.current) {
-        brewTextRef.current.style.opacity = "1";
-        brewTextRef.current.style.transform = "translateY(0)";
-      }
-      
-      if (restOfTextRef.current) {
-        restOfTextRef.current.style.opacity = "1";
-        restOfTextRef.current.style.transform = "translateY(0)";
-      }
-      
-      if (subtitleRef.current) {
-        subtitleRef.current.style.opacity = "1";
-      }
-      
-      document.querySelectorAll('.brew-letter').forEach(letter => {
-        (letter as HTMLElement).style.opacity = "1";
-        (letter as HTMLElement).style.transform = "scale(1)";
+      newBubbles.push({
+        id: i,
+        left: Math.random() * 100,
+        size: 6 + Math.random() * 10,
+        duration: duration
       });
-      
-      // Show bubbles container
-      if (bubblesContainerRef.current) {
-        bubblesContainerRef.current.style.opacity = "1";
-      }
-      
-      // Create a simple set of bubbles
-      const newBubbles = [];
-      // Create more bubbles for a fuller effect
-      for (let i = 0; i < 30; i++) { 
-        // More variation in duration for natural movement
-        const duration = 5 + (Math.random() * 5);
-        
-        newBubbles.push({
-          id: i,
-          // Randomize left position
-          left: Math.random() * 100,
-          // Larger sizes for more prominent bubbles
-          size: 6 + Math.random() * 10,
-          // Animation duration
-          duration: duration
-        });
-      }
-      setBubbles(newBubbles);
     }
-  }, [isMounted]);
+    setBubbles(newBubbles);
+
+    // Animate with Framer Motion - faster sequence
+    animate([
+      // Fade in brew text as one unit
+      [".brew-container", { opacity: 1, y: 0 }, { 
+        duration: 0.3, 
+        ease: "easeOut",
+      }],
+      // Fade in the rest of the text
+      [".rest-of-text", { opacity: 1, y: 0 }, { 
+        duration: 0.3, 
+        ease: "easeOut",
+        delay: 0.1 
+      }],
+      // Fade in subtitle
+      [".subtitle", { opacity: 1, y: 0 }, { 
+        duration: 0.3, 
+        ease: "easeOut",
+        delay: 0.1
+      }],
+      // Show bubbles
+      [".bubbles-container", { opacity: 1 }, { 
+        duration: 0.6, 
+        ease: "easeInOut",
+        delay: 0.4 
+      }]
+    ]);
+  }, [isMounted, animate]);
 
   // Update messages whenever generatedMessages or profiles change
   useEffect(() => {
@@ -258,6 +172,14 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Hide the background gradient
+    setShowBackground(false);
+    
+    if (!prompt) {
+      alert("Please enter your objective");
+      return;
+    }
     
     // Reset state for a new search
     setProfiles([]);
@@ -331,85 +253,18 @@ export default function Home() {
         throw new Error(searchData.error);
       }
       
-      // 3. Check for sufficient results
-      if (searchData.results && searchData.results.length < parseInt(limit)) {
-        // Try with a more generic query if we didn't get enough results
-        console.log(`[${new Date().toISOString()}] [page] Only found ${searchData.results.length} profiles, attempting backup search...`);
-        const backupSearchStartTime = performance.now();
-        
-        const backupQuery = generatedQuery + (alumniOnly ? ` OR ${latestProfile.universityName} alumni` : " OR professionals");
-        
-        const backupSearchResponse = await fetch('/api/linkd-search', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            userProfile: latestProfile,
-            userObjective: prompt,
-            limit: parseInt(limit) * 3,
-            generatedQuery: backupQuery,
-            alumniOnly: alumniOnly
-          }),
-        });
-        
-        const backupSearchData = await backupSearchResponse.json();
-        
-        const backupSearchEndTime = performance.now();
-        console.log(`[${new Date().toISOString()}] [page] Backup search completed in ${(backupSearchEndTime - backupSearchStartTime).toFixed(2)}ms`);
-        console.log(`[${new Date().toISOString()}] [page] Found ${backupSearchData.results ? backupSearchData.results.length : 0} profiles in backup search`);
-        
-        if (!backupSearchData.error && backupSearchData.results) {
-          // Combine results, avoiding duplicates
-          const allProfiles = [...searchData.results];
-          const existingIds = new Set(allProfiles.map(p => p.profile.id));
-          
-          for (const profile of backupSearchData.results) {
-            if (!existingIds.has(profile.profile.id)) {
-              allProfiles.push(profile);
-              existingIds.add(profile.profile.id);
-            }
-          }
-          
-          console.log(`[${new Date().toISOString()}] [page] Combined unique profiles: ${allProfiles.length}`);
-          setProfiles(allProfiles);
-          setIsSearching(false);
-          
-          // Start generating messages for all found profiles
-          setIsGeneratingMessages(true);
-          if (allProfiles.length > 0) {
-            const profilesForMessages = allProfiles.slice(0, parseInt(limit));
-            console.log(`[${new Date().toISOString()}] [page] Starting message generation for ${profilesForMessages.length} profiles`);
-            await generateMessagesForProfiles(profilesForMessages);
-          }
-        } else {
-          // Use original results if backup search failed
-          console.log(`[${new Date().toISOString()}] [page] Backup search failed, using original ${searchData.results?.length || 0} profiles`);
-          setProfiles(searchData.results || []);
-          setIsSearching(false);
-          
-          // Start generating messages
-          setIsGeneratingMessages(true);
-          const foundProfiles = searchData.results || [];
-          if (foundProfiles.length > 0) {
-            console.log(`[${new Date().toISOString()}] [page] Starting message generation for ${foundProfiles.length} profiles`);
-            await generateMessagesForProfiles(foundProfiles);
-          }
-        }
-      } else {
-        // We got enough results, use them
-        console.log(`[${new Date().toISOString()}] [page] Found sufficient profiles (${searchData.results?.length || 0}), proceeding with message generation`);
-        setProfiles(searchData.results || []);
-        setIsSearching(false);
-        
-        // Start generating messages
-        setIsGeneratingMessages(true);
-        const foundProfiles = searchData.results || [];
-        if (foundProfiles.length > 0) {
-          const profilesForMessages = foundProfiles.slice(0, parseInt(limit));
-          console.log(`[${new Date().toISOString()}] [page] Starting message generation for ${profilesForMessages.length} profiles`);
-          await generateMessagesForProfiles(profilesForMessages);
-        }
+      // Use the results we got, regardless of how many
+      console.log(`[${new Date().toISOString()}] [page] Proceeding with ${searchData.results?.length || 0} profiles for message generation`);
+      setProfiles(searchData.results || []);
+      setIsSearching(false);
+      
+      // Start generating messages
+      setIsGeneratingMessages(true);
+      const foundProfiles = searchData.results || [];
+      if (foundProfiles.length > 0) {
+        const profilesForMessages = foundProfiles.slice(0, Math.min(parseInt(limit), foundProfiles.length));
+        console.log(`[${new Date().toISOString()}] [page] Starting message generation for ${profilesForMessages.length} profiles`);
+        await generateMessagesForProfiles(profilesForMessages);
       }
     } catch (error) {
       console.error(`[${new Date().toISOString()}] [page] Error:`, error);
@@ -588,18 +443,17 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className={`flex flex-col min-h-screen ${showBackground ? 'bg-gradient-to-t from-yellow-950/70 via-yellow-950/20 to-white' : 'bg-white'}`}>
       <Navigation />
 
       {/* Main Content */}
       <div className="pt-12 px-4 sm:px-6 md:px-8 pb-20">
-        <div className="w-full max-w-2xl mx-auto space-y-12">
+        <div className="w-full max-w-2xl mx-auto space-y-12" ref={scope}>
           <div className="relative">
-            {/* Bubbles Container - Only render on client side and position it BEHIND the text */}
+            {/* Bubbles Container */}
             {isMounted && (
               <div 
-                ref={bubblesContainerRef}
-                className="absolute inset-0 bottom-0 top-0 opacity-0 pointer-events-none overflow-hidden"
+                className="bubbles-container absolute inset-0 bottom-0 top-0 opacity-0 pointer-events-none overflow-hidden"
                 style={{ 
                   zIndex: 0,
                   height: '350%', 
@@ -614,13 +468,10 @@ export default function Home() {
                     key={bubble.id}
                     className="brewing-bubble absolute bottom-0 rounded-full"
                     style={{
-                      // Distribute bubbles more evenly
                       left: index < 15 ? `${15 + (index * 5)}%` : `${bubble.left}%`,
                       width: `${bubble.size}px`,
                       height: `${bubble.size}px`,
-                      // Apply randomized duration to both animations for natural movement
                       animationDuration: `${bubble.duration}s, ${bubble.duration}s`,
-                      // Stagger animation starts
                       animationDelay: `${index * 0.3}s`
                     }}
                   />
@@ -630,19 +481,19 @@ export default function Home() {
             
             {/* Title with higher z-index to ensure it's above bubbles */}
             <h1 className="text-5xl font-bold text-center tracking-tight relative" style={{ zIndex: 1 }}>
-              <span ref={brewTextRef} className="text-primary inline-block">
-                <span className="brew-letter inline-block opacity-0" style={{ transform: "scale(0.5) translateY(20px) rotate(-10deg)" }}>B</span>
-                <span className="brew-letter inline-block opacity-0" style={{ transform: "scale(0.5) translateY(20px) rotate(-10deg)" }}>R</span>
-                <span className="brew-letter inline-block opacity-0" style={{ transform: "scale(0.5) translateY(20px) rotate(-10deg)" }}>E</span>
-                <span className="brew-letter inline-block opacity-0" style={{ transform: "scale(0.5) translateY(20px) rotate(-10deg)" }}>W</span>
-              </span>
-              <span ref={restOfTextRef} className="inline-block"> up your first conversation...</span>
+              <motion.span 
+                className="brew-container text-primary inline-block"
+                initial={{ opacity: 0, y: 15 }}
+              >
+                BREW
+              </motion.span>
+              <motion.span className="rest-of-text inline-block" initial={{ opacity: 0, y: 15 }}> up your first conversation...</motion.span>
             </h1>
           </div>
           
-          <p ref={subtitleRef} className="text-center text-muted-foreground relative" style={{ zIndex: 1 }}>
-            Find and connect with alumni from your school
-          </p>
+          <motion.p className="subtitle text-center text-medium text-xl text-muted-foreground relative" style={{ zIndex: 1 }} initial={{ opacity: 0, y: 15 }}>
+            Find and connect with anybody, your way
+          </motion.p>
           
           <SearchForm 
             prompt={prompt}
@@ -659,7 +510,7 @@ export default function Home() {
           {/* Loading Animation */}
           {isLoading && (
             <div className="flex justify-center mt-6 w-full">
-              <div className="relative w-[700px] h-[700px] -mt-40">
+              <div className="relative w-[500px] h-[500px] -mt-40">
                 <Image
                   src="/Loading Animation.gif"
                   alt="Loading Animation"
