@@ -7,6 +7,7 @@ import { ProfilesSection } from "@/components/profiles-section";
 import { MessagesSection } from "@/components/messages-section";
 import { UserResult } from "@/services/linkd-api";
 import { OutreachMessage, runLinkedInOutreach } from "@/app/stagehand/main";
+import Image from "next/image";
 
 // Define the UserProfile interface
 interface UserProfile {
@@ -592,7 +593,7 @@ export default function Home() {
 
       {/* Main Content */}
       <div className="pt-12 px-4 sm:px-6 md:px-8 pb-20">
-        <div className="w-full max-w-2xl mx-auto space-y-6">
+        <div className="w-full max-w-2xl mx-auto space-y-12">
           <div className="relative">
             {/* Bubbles Container - Only render on client side and position it BEHIND the text */}
             {isMounted && (
@@ -601,9 +602,11 @@ export default function Home() {
                 className="absolute inset-0 bottom-0 top-0 opacity-0 pointer-events-none overflow-hidden"
                 style={{ 
                   zIndex: 0,
-                  height: '250%', 
-                  width: '100%',
-                  top: '-50%'
+                  height: '350%', 
+                  width: '140%',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  top: '-150%'
                 }}
               >
                 {bubbles.map((bubble, index) => (
@@ -652,6 +655,22 @@ export default function Home() {
             isLoading={isLoading}
             isSearching={isSearching}
           />
+          
+          {/* Loading Animation */}
+          {isLoading && (
+            <div className="flex justify-center mt-6 w-full">
+              <div className="relative w-[700px] h-[700px] -mt-40">
+                <Image
+                  src="/Loading Animation.gif"
+                  alt="Loading Animation"
+                  fill
+                  className="object-contain"
+                  priority
+                  unoptimized={true}
+                />
+              </div>
+            </div>
+          )}
         </div>
         
         {/* LinkedIn Profiles Section */}
