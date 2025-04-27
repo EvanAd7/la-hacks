@@ -24,8 +24,8 @@ export function ProfilesSection({ profiles, limit }: ProfilesSectionProps) {
       </div>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {displayedProfiles.map((profile) => (
-          <ProfileCard key={profile.profile.id} profile={profile} />
+        {displayedProfiles.map((profile, index) => (
+          <ProfileCard key={`${profile.profile.id}-${index}`} profile={profile} />
         ))}
       </div>
     </div>

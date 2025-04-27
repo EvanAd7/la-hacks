@@ -41,549 +41,355 @@ export interface ContactProfile extends ProfileData {
 export const mockProfiles: ContactProfile[] = [
   {
     id: "profile-1",
-    category: ["Tech Recruiter", "Alumni"],
-    responded: true,
-    responseDate: "2024-05-10",
-    lastContactDate: "2024-05-05",
-    message: "Hi Jessica, I noticed you're a technical recruiter at Amazon with experience in ML roles. I recently completed a project using AWS SageMaker for NLP classification and would love to connect about potential opportunities in that space.",
+    category: ["UX Designer", "Student"],
+    responded: false,
+    lastContactDate: "2024-05-15",
+    message: "Hi Aastha, I was impressed by your work in UX design and your background in Computer Science. I'd love to connect and learn more about how you blend computer science, psychology, and public interest technology.",
     profile: {
-      id: "jessica-murphy",
-      name: "Jessica Murphy",
-      location: "Seattle, WA",
-      headline: "Technical Recruiter at Amazon AWS | Hiring ML Engineers",
-      description: "I help build world-class AI/ML teams at Amazon Web Services. Focusing on finding passionate engineers who want to push the boundaries of what's possible with machine learning at scale.",
-      title: "Technical Recruiter",
-      profile_picture_url: "https://i.pravatar.cc/150?img=20",
-      linkedin_url: "https://linkedin.com/in/example"
+      id: "131444453",
+      name: "Aastha Agrawal",
+      location: "Amherst, Massachusetts, United States",
+      headline: "UX Designer | Senior @ UMass Amherst | Blending Computer Science, Psychology, and Public Interest Technology for Human-Centered Innovation",
+      description: "Student with a diverse skillset spanning UX design, content writing, and software analysis.",
+      title: "Content Writer",
+      profile_picture_url: "https://media.licdn.com/dms/image/v2/D4E03AQH_UjEZBM5DHA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1696020970004?e=1749081600&v=beta&t=Mez9NAd-fvuTg5WhhMssls7qih2UpyyXL_t_ruw3hFc",
+      linkedin_url: "https://www.linkedin.com/in/ACwAADgc3YkBqX5szAW_eibh7JS09IRztrHdV5M"
     },
     experience: [
       {
-        title: "Technical Recruiter",
-        company_name: "Amazon",
-        start_date: "2021-03",
+        title: "UI/UX Designer & Product Manager",
+        company_name: "BUILD UMass",
+        start_date: "2024-11",
         end_date: "present",
-        description: "Lead technical recruiting for ML engineering roles across AWS AI services. Partner closely with hiring managers to build diverse and skilled teams.",
-        location: "Seattle, WA",
-        company_logo: "https://logo.clearbit.com/amazon.com"
+        description: "Designing user interfaces and managing product development for BUILD UMass projects.",
+        location: "Amherst, Massachusetts, United States",
+        company_logo: "https://media.licdn.com/dms/image/v2/C4D0BAQEOOjB5evIbRA/company-logo_400_400/company-logo_400_400/0/1630469396055/buildumass_logo?e=1749081600&v=beta&t=-zIbDB3cc-IWH14J8og5OpXYFpvnlTBS6WHwuwSOrng"
       },
       {
-        title: "Recruiter",
-        company_name: "Microsoft",
-        start_date: "2018-06",
-        end_date: "2021-02",
-        description: "Recruited software engineers for Azure cloud services teams.",
-        location: "Redmond, WA",
-        company_logo: "https://logo.clearbit.com/microsoft.com"
+        title: "Software Analyst",
+        company_name: "Amicus Global Inc.",
+        start_date: "2024-05",
+        end_date: "2024-08",
+        description: "Designed, built, tested, and deployed the Laboratory Information Management System (LIMS). Collaborated with stakeholders to gather requirements and ensure alignment with business objectives.",
+        location: "Maryland, United States",
+        company_logo: "https://media.licdn.com/dms/image/v2/C4E0BAQHArIEflWTVDA/company-logo_400_400/company-logo_400_400/0/1630614334466/amicus_technology_logo?e=1749081600&v=beta&t=tdbnGtNpGkiUphQcna_n74l7aog1cOwJ5_3jfFzA0Rc"
+      },
+      {
+        title: "Founder & President",
+        company_name: "Public Interest Technology",
+        start_date: "2022-09",
+        end_date: "present",
+        description: "Founded and leading a technology initiative focused on public interest applications at UMass Amherst.",
+        location: "University of Massachusetts Amherst",
+        company_logo: "https://media.licdn.com/dms/image/v2/D560BAQHo8iIYFyU20Q/company-logo_400_400/company-logo_400_400/0/1726176765479/public_interest_technology_logo?e=1749081600&v=beta&t=_pUy6MDhg01q63pdOnLEBAGASfkO6cWQjXgdQ7F1KwM"
       }
     ],
     education: [
       {
-        degree: "Bachelor of Arts",
-        field_of_study: "Psychology",
-        school_name: "University of Washington",
-        start_date: "2014",
-        end_date: "2018",
-        description: "Focus on industrial psychology and organizational behavior",
-        school_logo: "https://logo.clearbit.com/washington.edu"
+        degree: "Bachelor of Science - BS",
+        field_of_study: "Major: Computer Science, Minor: Psychology, Certificate: Public Interest Technology",
+        school_name: "University of Massachusetts Amherst",
+        start_date: "2021",
+        end_date: "2025",
+        description: "Combining computer science with psychology and public interest technology to create human-centered solutions.",
+        school_logo: "https://media.licdn.com/dms/image/v2/D4E0BAQFCzmsrZannXw/company-logo_400_400/company-logo_400_400/0/1680271203107/umassamherst_logo?e=1749686400&v=beta&t=xdgC1WUvjIH4hFneG6DxDN1V2kCPLsnW0g71I2l5PU0"
       }
     ]
   },
   {
     id: "profile-2",
-    category: ["Engineer", "Alumni"],
-    responded: false,
-    lastContactDate: "2024-05-08",
-    message: "Hello Emily, I came across your profile and was impressed by your work at Netflix. As a fellow Stanford CS alum, I'm very interested in learning more about the engineering culture there and how you've applied your skills in distributed systems.",
+    category: ["Product Manager", "Tech Professional"],
+    responded: true,
+    responseDate: "2024-05-10",
+    lastContactDate: "2024-05-05",
+    message: "Hello Alex, I'm impressed by your product management experience at noon and your background in computer science. I'd love to hear about your transition from software engineering to product management.",
     profile: {
-      id: "emily-zhang",
-      name: "Emily Zhang",
-      location: "San Francisco, CA",
-      headline: "Software Engineer at Netflix | Distributed Systems",
-      description: "I build scalable distributed systems at Netflix, focusing on the content delivery platform. Passionate about high-performance computing and microservices architecture.",
-      title: "Senior Software Engineer",
-      profile_picture_url: "https://i.pravatar.cc/150?img=10",
-      linkedin_url: "https://linkedin.com/in/example"
+      id: "168388709",
+      name: "Alex Ko",
+      location: "Dubai, United Arab Emirates",
+      headline: "Product Manager 1 at Namshi | noon",
+      description: "Product manager with a strong technical background in software engineering and UI/UX design.",
+      title: "Product Manager 1",
+      profile_picture_url: "https://media.licdn.com/dms/image/v2/D4D03AQFIos4aNwuaqg/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1685181790219?e=1745452800&v=beta&t=MY6ros7Z1GEhyM8Oif95LeNePyD6cA9LoevFKmDwUu8",
+      linkedin_url: "https://www.linkedin.com/in/ACwAAC-w8nwBerWHl3vU0YA9BYBxkPJZYCPNGr0"
     },
     experience: [
       {
-        title: "Senior Software Engineer",
-        company_name: "Netflix",
-        start_date: "2022-01",
+        title: "Product Manager 1",
+        company_name: "noon",
+        start_date: "2024-01",
         end_date: "present",
-        description: "Working on core content delivery microservices, improving system reliability and performance at scale.",
-        location: "Los Gatos, CA",
-        company_logo: "https://logo.clearbit.com/netflix.com"
+        description: "Discovery at Namshi (acquired by noon)",
+        location: "Dubai, United Arab Emirates",
+        company_logo: "https://media.licdn.com/dms/image/v2/C510BAQHuVrAgR-7UBA/company-logo_400_400/company-logo_400_400/0/1630597270656/nooncom_logo?e=1749686400&v=beta&t=2_N8w0cPOV8UiPLa5GGi6PRXqoASyDblKYb4ENfEZQY"
       },
       {
-        title: "Software Engineer",
-        company_name: "Dropbox",
-        start_date: "2019-05",
-        end_date: "2021-12",
-        description: "Built sync engine components and file system reconciliation services.",
-        location: "San Francisco, CA",
-        company_logo: "https://logo.clearbit.com/dropbox.com"
+        title: "Software Engineering Intern",
+        company_name: "Endex",
+        start_date: "2022-06",
+        end_date: "2022-08",
+        description: "Improved Hi-Fidelity prototypes for the Endex app on Figma and proposed UX/UI changes for our Private Beta Release. Built and deployed iOS app screens with Flutter.",
+        location: "New York, United States",
+        company_logo: "https://media.licdn.com/dms/image/v2/C4D0BAQE7nGj0OKN7qQ/company-logo_400_400/company-logo_400_400/0/1632189639688/endexapp_logo?e=1749081600&v=beta&t=I9KZ_vxA_qdFDjJHMe5llobQoNZc91bb8mi3HsL-Zx4"
+      },
+      {
+        title: "Strategic Communications and Web Development Intern",
+        company_name: "AI for Good Foundation",
+        start_date: "2021-02",
+        end_date: "2021-04",
+        description: "Designed and monitored social media fundraising campaigns and researched articles about AI for consistent new web content. Assisted with interactive website development.",
+        location: "Berkeley, California, United States",
+        company_logo: "https://media.licdn.com/dms/image/v2/C560BAQG2P5GN9rQfNg/company-logo_400_400/company-logo_400_400/0/1670278941905/ai_for_good_foundation_logo?e=1749686400&v=beta&t=5fE_up0Y527Gu5WiyTUR0AeE8ZHk7M4CnOPYKBkC2ns"
       }
     ],
     education: [
       {
-        degree: "MS",
+        degree: "Bachelor's degree",
         field_of_study: "Computer Science",
-        school_name: "Stanford University",
-        start_date: "2017",
-        end_date: "2019",
-        description: "Specialization in distributed systems and databases",
-        school_logo: "https://logo.clearbit.com/stanford.edu"
-      },
-      {
-        degree: "BS",
-        field_of_study: "Computer Science",
-        school_name: "Stanford University",
-        start_date: "2013",
-        end_date: "2017",
-        description: "Minor in Human-Computer Interaction",
-        school_logo: "https://logo.clearbit.com/stanford.edu"
+        school_name: "New York University Abu Dhabi",
+        start_date: "2019",
+        end_date: "2023",
+        description: "Computer Science degree with focus on software engineering and product development.",
+        school_logo: "https://media.licdn.com/dms/image/v2/C4D0BAQEr7NDNythPxw/company-logo_400_400/company-logo_400_400/0/1631314170855?e=1749686400&v=beta&t=RCX-VRu1R-J-Nc5CKFyaCoQRqLULBvQvQy4ugj6WuHw"
       }
     ]
   },
   {
     id: "profile-3",
-    category: ["Startup Founder", "Alumni"],
-    responded: true,
-    responseDate: "2024-05-07",
-    lastContactDate: "2024-05-02",
-    message: "Hi Sara, I was excited to learn about your fintech startup journey after being in SEP Club together at USC. I'm working on a ML-powered financial product and would love to get your insights on the regulatory landscape you've navigated.",
+    category: ["Tech PM", "Computer Science Professional"],
+    responded: false,
+    lastContactDate: "2024-05-03",
+    message: "Hi Roberta, your combination of computer science expertise and product management experience is impressive. I'd love to connect and learn about your journey from systems analyst to product leadership.",
     profile: {
-      id: "sara-chen",
-      name: "Sara Chen",
-      location: "New York, NY",
-      headline: "Founder & CEO at FinTech Innovations | YC W22 | USC Alum",
-      description: "Founded FinTech Innovations to make financial services more accessible through AI and automation. YCombinator W22 batch. Previously investment banking at Goldman Sachs.",
-      title: "Founder & CEO",
-      profile_picture_url: "https://i.pravatar.cc/150?img=5",
-      linkedin_url: "https://linkedin.com/in/example"
+      id: "3172698",
+      name: "Roberta Ältermann",
+      location: "São Paulo, São Paulo, Brazil",
+      headline: "Tech | Product Manager | MSc. in Computer Science USP | Mathematics | MBA | Cloud ☁️",
+      description: "Experienced product leader with a strong technical background in computer science and systems engineering.",
+      title: "Product Manager FinOps & Painel MultiCloud",
+      profile_picture_url: "https://media.licdn.com/dms/image/v2/D4D03AQGeSXS8pDZGJA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1708722937683?e=1741219200&v=beta&t=ew9f3tD6vTduAtqYz3ysPvFzyqLrIwleL2lVBZ4JUA0",
+      linkedin_url: "https://www.linkedin.com/in/ACwAAADd9H4B2x33GGwSFZZKSMaBXjp1voi13bA"
     },
     experience: [
       {
-        title: "Founder & CEO",
-        company_name: "FinTech Innovations",
-        start_date: "2021-09",
+        title: "Product Manager FinOps & Painel MultiCloud",
+        company_name: "Claro Brasil",
+        start_date: "2020-02",
         end_date: "present",
-        description: "Building an AI-powered platform that automates financial decision-making for small businesses. Raised $3.5M seed round after YC W22.",
-        location: "New York, NY",
-        company_logo: "https://logo.clearbit.com/fintech-innovations.io"
+        description: "Leading product strategy and development for FinOps and cloud management solutions.",
+        location: "São Paulo, Brazil",
+        company_logo: "https://media.licdn.com/dms/image/v2/C4D0BAQH2gEZpU9Oy5Q/company-logo_400_400/company-logo_400_400/0/1630559270452/clarobrasil_logo?e=1749686400&v=beta&t=vJEC2jUjx9_cLSHmfx1aHllcB7n4oFYLJ8q1CgEPmj4"
       },
       {
-        title: "Investment Banking Analyst",
-        company_name: "Goldman Sachs",
-        start_date: "2019-06",
-        end_date: "2021-08",
-        description: "Worked in the Technology, Media & Telecommunications group, supporting M&A and IPO transactions.",
-        location: "New York, NY",
-        company_logo: "https://logo.clearbit.com/goldmansachs.com"
+        title: "Head Of Product | Agile",
+        company_name: "Beleza na Web | Largest Cosmetic e-Tailer in Brazil",
+        start_date: "2017-07",
+        end_date: "2020-01",
+        description: "Led product strategy and development for Brazil's largest cosmetics e-commerce platform using Agile methodologies.",
+        location: "São Paulo, Brazil",
+        company_logo: "https://media.licdn.com/dms/image/v2/C4E0BAQEzyqKD3VpxxQ/company-logo_400_400/company-logo_400_400/0/1656592053215/beleza_na_web_logo?e=1749686400&v=beta&t=pNbLKmI2ka0YHqbJJRj1ieQSnp2mrAFXokpgNw4z6FQ"
+      },
+      {
+        title: "Group Product Manager",
+        company_name: "Beleza na Web | Largest Cosmetic e-Tailer in Brazil",
+        start_date: "2016-08",
+        end_date: "2017-07",
+        description: "Managed product development teams and initiatives for e-commerce platform enhancements.",
+        location: "São Paulo, Brazil",
+        company_logo: "https://media.licdn.com/dms/image/v2/C4E0BAQEzyqKD3VpxxQ/company-logo_400_400/company-logo_400_400/0/1656592053215/beleza_na_web_logo?e=1749686400&v=beta&t=pNbLKmI2ka0YHqbJJRj1ieQSnp2mrAFXokpgNw4z6FQ"
       }
     ],
     education: [
       {
-        degree: "Bachelor of Science",
-        field_of_study: "Business Administration",
-        school_name: "University of Southern California",
-        start_date: "2015",
-        end_date: "2019",
-        description: "Marshall School of Business, Concentration in Finance. Active in SEP Entrepreneurship Club.",
-        school_logo: "https://logo.clearbit.com/usc.edu"
+        degree: "MSc",
+        field_of_study: "Computer Science",
+        school_name: "Instituto de Matemática e Estatística - Universidade de São Paulo (IME-USP)",
+        start_date: "2004",
+        end_date: "2007",
+        description: "Research focus on computer science principles and applications.",
+        school_logo: "https://media.licdn.com/dms/image/v2/C4D0BAQHcV9q3HlLtvg/company-logo_400_400/company-logo_400_400/0/1659061684351/instituto_de_matemtica_e_estatstica_universidade_de_so_paulo_ime_usp_logo?e=1749686400&v=beta&t=D75qqqiF7DVcKMGNgJLAMIaJP8_ur19mxI4WjqSIazE"
+      },
+      {
+        degree: "Mathematics",
+        field_of_study: "Mathematics",
+        school_name: "Instituto de Matemática e Estatística - Universidade de São Paulo (IME-USP)",
+        start_date: "1999",
+        end_date: "2002",
+        description: "Foundation in mathematical theory and applications.",
+        school_logo: "https://media.licdn.com/dms/image/v2/C4D0BAQHcV9q3HlLtvg/company-logo_400_400/company-logo_400_400/0/1659061684351/instituto_de_matemtica_e_estatstica_universidade_de_so_paulo_ime_usp_logo?e=1749686400&v=beta&t=D75qqqiF7DVcKMGNgJLAMIaJP8_ur19mxI4WjqSIazE"
       }
     ]
   },
   {
     id: "profile-4",
-    category: ["VC", "Alumni"],
-    responded: false,
-    lastContactDate: "2024-05-09",
-    message: "Michael, I hope this message finds you well. As a fellow SEP Club member from USC, I've been following your career in venture capital with interest. I'm working on a new ML-powered platform and would value your perspective on the current funding landscape for AI startups.",
+    category: ["Product Manager", "Tech Professional"],
+    responded: true,
+    responseDate: "2024-04-20",
+    lastContactDate: "2024-04-15",
+    message: "Hi Miguel, your experience as a product manager at Juniper Networks caught my attention. I'd appreciate learning about your path from engineering to product management in the tech industry.",
     profile: {
-      id: "michael-rodriguez",
-      name: "Michael Rodriguez",
-      location: "Menlo Park, CA",
-      headline: "VC Associate at Sequoia Capital | USC Alum | Early-stage Investor",
-      description: "Investing in early-stage technology companies at Sequoia Capital, with a focus on AI/ML, enterprise SaaS, and consumer platforms. Former product manager and SEP Club president at USC.",
-      title: "Associate",
-      profile_picture_url: "https://i.pravatar.cc/150?img=3",
-      linkedin_url: "https://linkedin.com/in/example"
+      id: "141395727",
+      name: "Miguel Gomez",
+      location: "Madrid, Community of Madrid, Spain",
+      headline: "Project Manager at Juniper Networks",
+      description: "Product manager with a strong background in telecommunications engineering and technical marketing.",
+      title: "Product Manager",
+      profile_picture_url: "https://media.licdn.com/dms/image/v2/C4E03AQHeyLMmhM8RaQ/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1517526421825?e=1744848000&v=beta&t=Thnttj8oII6Xhplqh--1rT8CPQNdSB4MfxgTDp4F6uQ",
+      linkedin_url: "https://www.linkedin.com/in/ACwAABPLQaQBiJ0F5j3frCsoNbGZDtnnRPOLWos"
     },
     experience: [
       {
-        title: "Associate",
-        company_name: "Sequoia Capital",
-        start_date: "2022-08",
+        title: "Product Manager",
+        company_name: "Juniper Networks",
+        start_date: "2021-01",
         end_date: "present",
-        description: "Source and evaluate early-stage investment opportunities in technology startups. Focus areas include AI/ML, enterprise SaaS, and consumer platforms.",
-        location: "Menlo Park, CA",
-        company_logo: "https://logo.clearbit.com/sequoiacap.com"
+        description: "Leading product strategy and development initiatives for networking solutions.",
+        location: "Community of Madrid, Spain",
+        company_logo: "https://media.licdn.com/dms/image/v2/D560BAQHs1l2oz4krEw/company-logo_400_400/company-logo_400_400/0/1686866548188/juniper_networks_logo?e=1749686400&v=beta&t=vWj_GVVoUmervNv1jDokk3mIOehFzxs-uDeTQf8RWuo"
       },
       {
-        title: "Product Manager",
-        company_name: "Stripe",
-        start_date: "2020-05",
-        end_date: "2022-07",
-        description: "Led product for Stripe Connect, working on marketplace payment solutions.",
-        location: "San Francisco, CA",
-        company_logo: "https://logo.clearbit.com/stripe.com"
+        title: "Technical Marketing Engineer",
+        company_name: "Juniper Networks",
+        start_date: "2020-10",
+        end_date: "2021-01",
+        description: "Created technical marketing materials and strategies to showcase product capabilities and features.",
+        location: "Barajas, Madrid, Comunidad de Madrid, España",
+        company_logo: "https://media.licdn.com/dms/image/v2/D560BAQHs1l2oz4krEw/company-logo_400_400/company-logo_400_400/0/1686866548188/juniper_networks_logo?e=1749686400&v=beta&t=vWj_GVVoUmervNv1jDokk3mIOehFzxs-uDeTQf8RWuo"
+      },
+      {
+        title: "Technical Product Manager",
+        company_name: "Netrounds",
+        start_date: "2019-12",
+        end_date: "2020-10",
+        description: "Managed technical aspects of product development and market fit for network testing solutions.",
+        location: "Madrid, Community of Madrid, Spain",
+        company_logo: "https://media.licdn.com/dms/image/v2/C510BAQE-HloG3zbASA/company-logo_400_400/company-logo_400_400/0/1631311197951?e=1748476800&v=beta&t=b_qCScRxh4xDdxOr-g7JtobKeqx3Csxk_yfP9QCEI0Y"
       }
     ],
     education: [
       {
-        degree: "MBA",
-        field_of_study: "Business Administration",
-        school_name: "Harvard Business School",
-        start_date: "2018",
-        end_date: "2020",
-        description: "Member of the Venture Capital & Private Equity Club, Tech Club",
-        school_logo: "https://logo.clearbit.com/hbs.edu"
-      },
-      {
-        degree: "Bachelor of Science",
-        field_of_study: "Business Administration",
-        school_name: "University of Southern California",
-        start_date: "2014",
-        end_date: "2018",
-        description: "Marshall School of Business. President of SEP Entrepreneurship Club.",
-        school_logo: "https://logo.clearbit.com/usc.edu"
+        degree: "Master of Science (MSc) Telecomunications Engineering",
+        field_of_study: "Computer Science",
+        school_name: "Universidad Politécnica de Madrid",
+        start_date: "2006",
+        end_date: "2012",
+        description: "Specialized in telecommunications engineering with focus on computer science applications.",
+        school_logo: "https://media.licdn.com/dms/image/v2/D4D0BAQHJPlcA68PA2Q/company-logo_400_400/company-logo_400_400/0/1686904766811/universidad_politecnica_de_madrid_logo?e=1749686400&v=beta&t=PBTdqV5NAETJGk4SqjamkQbJCns4_J9adCdUj1aNXWg"
       }
     ]
   },
   {
     id: "profile-5",
-    category: ["Engineer", "Alumni"],
-    responded: true,
-    responseDate: "2024-05-15",
-    lastContactDate: "2024-05-12",
-    message: "Hi David, I noticed we both attended Stanford Design School, though a few years apart. I'm particularly impressed by your work on Apple's product design team. I'd love to learn more about how you approach combining design thinking with technology development.",
+    category: ["Program Manager", "Scrum Master"],
+    responded: false,
+    lastContactDate: "2024-04-10",
+    message: "Hello Charles, your experience as a Scrum Master and Product Owner caught my attention. I'm interested in learning more about your approach to agile product development and team leadership.",
     profile: {
-      id: "david-kim",
-      name: "David Kim",
-      location: "Cupertino, CA",
-      headline: "Product Designer at Apple | Stanford d.school Alum",
-      description: "Creating intuitive and beautiful experiences at Apple. I combine human-centered design with technology to build products that people love. Passionate about the intersection of hardware and software design.",
-      title: "Senior Product Designer",
-      profile_picture_url: "https://i.pravatar.cc/150?img=11",
-      linkedin_url: "https://linkedin.com/in/example"
+      id: "151175973",
+      name: "Charles Crandall",
+      location: "Ellicott City, Maryland, United States",
+      headline: "Scrum Master / Agile Project Manager / Product Owner",
+      description: "Experienced agile practitioner with expertise in Scrum, product ownership, and technical program management.",
+      title: "Scrum Master",
+      profile_picture_url: "https://media.licdn.com/dms/image/v2/D4E03AQHNdFDjQv_7iA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1706102196299?e=1744848000&v=beta&t=I6XJHFiHqpzhFw9lMe2DI9KdpnW0Nyp8rtJ7lIVzZls",
+      linkedin_url: "https://www.linkedin.com/in/ACwAAAFodC0BKyrh8DdKOc-D_us0kv-xurZ5Qnc"
     },
     experience: [
       {
-        title: "Senior Product Designer",
-        company_name: "Apple",
-        start_date: "2021-04",
+        title: "Scrum Master",
+        company_name: "Jack Henry & Associates",
+        start_date: "2024-02",
         end_date: "present",
-        description: "Leading design for next-generation Apple products, focusing on the intersection of hardware and software experiences.",
-        location: "Cupertino, CA",
-        company_logo: "https://logo.clearbit.com/apple.com"
+        description: "Working with a great team to develop the next generation of check imaging software for regional banks and credit unions.",
+        location: "Baltimore metropolitan area, Maryland, United States",
+        company_logo: "https://media.licdn.com/dms/image/v2/C4E0BAQEbosvo87NZ-Q/company-logo_400_400/company-logo_400_400/0/1659316229997/jack_henry__associates_logo?e=1749686400&v=beta&t=5lPdIfeX1jLnSoKhhgv_sWPJA6MecJqRyX1eVBeqvGY"
       },
       {
-        title: "Product Designer",
-        company_name: "Airbnb",
-        start_date: "2018-07",
-        end_date: "2021-03",
-        description: "Designed key features for the Airbnb user experience across mobile and web platforms.",
-        location: "San Francisco, CA",
-        company_logo: "https://logo.clearbit.com/airbnb.com"
+        title: "Product Owner, Acumen Source",
+        company_name: "Allegis Global Solutions",
+        start_date: "2022-03",
+        end_date: "2023-10",
+        description: "Responsible for the ongoing development and vision for the Acumen Source product. Managed transformation from on/near-shore to off-shore development team.",
+        location: "Hanover, Maryland, United States",
+        company_logo: "https://media.licdn.com/dms/image/v2/D4E0BAQFxjdppnHCViA/company-logo_400_400/company-logo_400_400/0/1720196577923/allegis_global_solutions_logo?e=1749686400&v=beta&t=FjDHW7sc1-M-4Gr6hq51oySJCm664vynoh0r7ZwqWKo"
+      },
+      {
+        title: "Technical Program Manager",
+        company_name: "Allegis Global Solutions",
+        start_date: "2018-11",
+        end_date: "2022-03",
+        description: "Operated as overall Technical Manager for the Acumen Source program. Responsible for Scrum Master duties as well as budget and overall program management.",
+        location: "Hanover, Maryland, United States",
+        company_logo: "https://media.licdn.com/dms/image/v2/D4E0BAQFxjdppnHCViA/company-logo_400_400/company-logo_400_400/0/1720196577923/allegis_global_solutions_logo?e=1749686400&v=beta&t=FjDHW7sc1-M-4Gr6hq51oySJCm664vynoh0r7ZwqWKo"
       }
     ],
     education: [
       {
-        degree: "Master of Fine Arts",
-        field_of_study: "Design",
-        school_name: "Stanford University",
-        start_date: "2016",
-        end_date: "2018",
-        description: "Stanford d.school, focusing on interaction design and product innovation",
-        school_logo: "https://logo.clearbit.com/stanford.edu"
-      },
-      {
-        degree: "Bachelor of Arts",
-        field_of_study: "Graphic Design",
-        school_name: "Rhode Island School of Design",
-        start_date: "2012",
-        end_date: "2016",
-        description: "Concentration in digital media",
-        school_logo: "https://logo.clearbit.com/risd.edu"
+        degree: "Bachelor of Science - BS",
+        field_of_study: "Computer Science",
+        school_name: "University of Maryland Global Campus",
+        start_date: "1980",
+        end_date: "1986",
+        description: "Computer Science degree with focus on software development and systems analysis.",
+        school_logo: "https://media.licdn.com/dms/image/v2/C4E0BAQE7DmPl0TeYKQ/company-logo_400_400/company-logo_400_400/0/1630610225890/university_of_maryland_global_campus_logo?e=1749686400&v=beta&t=wGYGdZOWzQUzDH0KwondHHeYFbiWn96OKgGyybzrI3k"
       }
     ]
   },
   {
     id: "profile-6",
-    category: ["Engineer", "Alumni"],
-    responded: false,
-    lastContactDate: "2024-05-01",
-    message: "Hello Sophia, I came across your profile and was impressed by your work in reinforcement learning at OpenAI. I'm also working on ML projects and would love to connect and hear about your experience since winning LA Hacks 2022.",
-    profile: {
-      id: "sophia-williams",
-      name: "Sophia Williams",
-      location: "San Francisco, CA",
-      headline: "Machine Learning Engineer at OpenAI | Reinforcement Learning | LA Hacks Winner",
-      description: "Building the future of AI at OpenAI, specializing in reinforcement learning from human feedback. My work focuses on training language models to better align with human values and preferences.",
-      title: "Machine Learning Engineer",
-      profile_picture_url: "https://i.pravatar.cc/150?img=9",
-      linkedin_url: "https://linkedin.com/in/example"
-    },
-    experience: [
-      {
-        title: "Machine Learning Engineer",
-        company_name: "OpenAI",
-        start_date: "2022-06",
-        end_date: "present",
-        description: "Working on reinforcement learning from human feedback (RLHF) to train and align language models. Contributing to model alignment research.",
-        location: "San Francisco, CA",
-        company_logo: "https://logo.clearbit.com/openai.com"
-      },
-      {
-        title: "ML Research Intern",
-        company_name: "Google Brain",
-        start_date: "2021-05",
-        end_date: "2022-05",
-        description: "Researched multi-task reinforcement learning approaches for robot manipulation tasks.",
-        location: "Mountain View, CA",
-        company_logo: "https://logo.clearbit.com/google.com"
-      }
-    ],
-    education: [
-      {
-        degree: "MS",
-        field_of_study: "Computer Science",
-        school_name: "University of California, Berkeley",
-        start_date: "2020",
-        end_date: "2022",
-        description: "Focus on artificial intelligence and machine learning. Winner of LA Hacks 2022 with an AI project for accessibility.",
-        school_logo: "https://logo.clearbit.com/berkeley.edu"
-      },
-      {
-        degree: "BS",
-        field_of_study: "Computer Science",
-        school_name: "University of California, Los Angeles",
-        start_date: "2016",
-        end_date: "2020",
-        description: "Minor in Cognitive Science",
-        school_logo: "https://logo.clearbit.com/ucla.edu"
-      }
-    ]
-  },
-  {
-    id: "profile-7",
-    category: ["Product", "AI Researcher"],
+    category: ["Tech Manager", "Program Management"],
     responded: true,
-    responseDate: "2024-05-16",
-    lastContactDate: "2024-05-14",
-    message: "Dr. Park, I've been following your research at DeepMind on large language models. I read your recent NLP conference paper and was particularly intrigued by your approach to few-shot learning. Would you be open to discussing some research ideas in this area?",
+    responseDate: "2024-04-05",
+    lastContactDate: "2024-04-01",
+    message: "Hi Balaji, your experience as a product manager and consulting expert is impressive. I'd love to learn more about your work in program management and how you've applied your computer science background throughout your career.",
     profile: {
-      id: "lisa-park",
-      name: "Dr. Lisa Park",
-      location: "London, UK",
-      headline: "Research Scientist at DeepMind | NLP & Large Language Models",
-      description: "Research scientist working on large language models at DeepMind. My research focuses on improving few-shot learning, reasoning capabilities, and safety in large language models.",
-      title: "Research Scientist",
-      profile_picture_url: "https://i.pravatar.cc/150?img=23",
-      linkedin_url: "https://linkedin.com/in/example"
+      id: "75544124",
+      name: "Balaji Rajamani",
+      location: "Chantilly, Virginia, United States",
+      headline: "Manager Consulting Expert",
+      description: "Experienced program management professional with expertise in product management and technical implementation.",
+      title: "Senior Program Management Analyst, PMO, Office of the Chief Information Officer (OCIO)",
+      profile_picture_url: "https://media.licdn.com/dms/image/v2/D4E03AQH7q_BWLdTLHA/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1715697553264?e=1746057600&v=beta&t=cCbgJS3o0BK_IGCwIZGDLKC2bk72pF5LBN5k43ExORQ",
+      linkedin_url: "https://www.linkedin.com/in/ACwAAAAO1bkBjuXtKOMd7kga28GsVY1js8T3T6A"
     },
     experience: [
       {
-        title: "Research Scientist",
-        company_name: "DeepMind",
-        start_date: "2020-03",
+        title: "Manager Consulting Expert",
+        company_name: "CGI",
+        start_date: "2024-07",
         end_date: "present",
-        description: "Leading research on large language models, focusing on few-shot learning, reasoning, and alignment. Published several papers at top NLP conferences.",
-        location: "London, UK",
-        company_logo: "https://logo.clearbit.com/deepmind.com"
+        description: "Providing expert consulting services in program management and technology implementation.",
+        location: "Arlington, Virginia, United States",
+        company_logo: "https://media.licdn.com/dms/image/v2/C4E0BAQErzXWSFkn9tQ/company-logo_400_400/company-logo_400_400/0/1663664110809/cgi_logo?e=1749686400&v=beta&t=TMciUGVKa4PsYzqWKPFSsVJaCSon-taBjQ3R420kkws"
       },
       {
-        title: "Research Scientist",
-        company_name: "Microsoft Research",
-        start_date: "2018-01",
-        end_date: "2020-02",
-        description: "Researched natural language processing and neural language models.",
-        location: "Cambridge, UK",
-        company_logo: "https://logo.clearbit.com/microsoft.com"
+        title: "Senior Program Management Analyst, PMO, Office of the Chief Information Officer (OCIO)",
+        company_name: "Cybersecurity and Infrastructure Security Agency",
+        start_date: "2024-07",
+        end_date: "present",
+        description: "Leading program management initiatives within the Office of the Chief Information Officer.",
+        location: "Arlington, Virginia, United States",
+        company_logo: "https://media.licdn.com/dms/image/v2/C560BAQHqZkwy_9qfLg/company-logo_400_400/company-logo_400_400/0/1657640157247/cisagov_logo?e=1749686400&v=beta&t=Dq6Mgiu747odxiHCbpxkoPWgC03akBASP20SprK8n68"
+      },
+      {
+        title: "Product Manager",
+        company_name: "Duck Creek Technologies (formerly Agencyport Software)",
+        start_date: "2003",
+        end_date: "2007-12",
+        description: "Managed product development and implementation strategies for insurance technology solutions.",
+        location: "Boston area",
+        company_logo: ""
       }
     ],
     education: [
       {
-        degree: "PhD",
-        field_of_study: "Computer Science",
-        school_name: "Carnegie Mellon University",
-        start_date: "2013",
-        end_date: "2017",
-        description: "Thesis on neural approaches to language understanding and generation",
-        school_logo: "https://logo.clearbit.com/cmu.edu"
-      },
-      {
-        degree: "BS",
-        field_of_study: "Computer Science and Mathematics",
-        school_name: "MIT",
-        start_date: "2009",
-        end_date: "2013",
-        description: "Graduated with honors",
-        school_logo: "https://logo.clearbit.com/mit.edu"
-      }
-    ]
-  },
-  {
-    id: "profile-8",
-    category: ["Tech Recruiter"],
-    responded: false,
-    lastContactDate: "2024-05-15",
-    message: "Hi Chris, I noticed you're a Talent Partner at Andreessen Horowitz helping portfolio companies with technical talent. I'm a software engineer with experience in ML and web development, and I'd love to learn more about the types of roles you're currently helping portfolio companies fill.",
-    profile: {
-      id: "chris-johnson",
-      name: "Chris Johnson",
-      location: "Menlo Park, CA",
-      headline: "Talent Partner at Andreessen Horowitz | Connecting Top Tech Talent with Startups",
-      description: "I help a16z portfolio companies build world-class technical teams. Specializing in engineering, product, and data science roles for early to mid-stage startups.",
-      title: "Talent Partner",
-      profile_picture_url: "https://i.pravatar.cc/150?img=30",
-      linkedin_url: "https://linkedin.com/in/example"
-    },
-    experience: [
-      {
-        title: "Talent Partner",
-        company_name: "Andreessen Horowitz",
-        start_date: "2021-01",
-        end_date: "present",
-        description: "Support a16z portfolio companies with talent strategy and executive recruiting. Focus on engineering, product, and data science roles.",
-        location: "Menlo Park, CA",
-        company_logo: "https://logo.clearbit.com/a16z.com"
-      },
-      {
-        title: "Technical Recruiter",
-        company_name: "Facebook",
-        start_date: "2017-03",
-        end_date: "2020-12",
-        description: "Led technical recruiting for infrastructure and ML engineering teams.",
-        location: "Menlo Park, CA",
-        company_logo: "https://logo.clearbit.com/facebook.com"
-      }
-    ],
-    education: [
-      {
-        degree: "Bachelor of Arts",
-        field_of_study: "Business Administration",
-        school_name: "University of Michigan",
-        start_date: "2013",
-        end_date: "2017",
-        description: "Concentration in Organizational Studies",
-        school_logo: "https://logo.clearbit.com/umich.edu"
-      }
-    ]
-  },
-  {
-    id: "profile-9",
-    category: ["Engineer", "SF Tech Scene"],
-    responded: true,
-    responseDate: "2024-05-04",
-    lastContactDate: "2024-05-03",
-    message: "Hello Olivia, it was great meeting you at the React meetup in SF last month. I've been following your work on Airbnb's design systems and would love to chat more about component architecture and design tokens. Are you free for a virtual coffee sometime next week?",
-    profile: {
-      id: "olivia-smith",
-      name: "Olivia Smith",
-      location: "San Francisco, CA",
-      headline: "Frontend Engineer at Airbnb | Design Systems | React",
-      description: "Building scalable design systems at Airbnb. I focus on creating component libraries and design tokens that enable consistent, accessible user experiences across Airbnb's web platform.",
-      title: "Senior Frontend Engineer",
-      profile_picture_url: "https://i.pravatar.cc/150?img=29",
-      linkedin_url: "https://linkedin.com/in/example"
-    },
-    experience: [
-      {
-        title: "Senior Frontend Engineer",
-        company_name: "Airbnb",
-        start_date: "2020-07",
-        end_date: "present",
-        description: "Leading development on Airbnb's design system. Building reusable React components and implementing design tokens for consistent UX.",
-        location: "San Francisco, CA",
-        company_logo: "https://logo.clearbit.com/airbnb.com"
-      },
-      {
-        title: "Frontend Engineer",
-        company_name: "Lyft",
-        start_date: "2018-02",
-        end_date: "2020-06",
-        description: "Worked on rider-facing web applications using React and TypeScript.",
-        location: "San Francisco, CA",
-        company_logo: "https://logo.clearbit.com/lyft.com"
-      }
-    ],
-    education: [
-      {
-        degree: "Bachelor of Science",
-        field_of_study: "Computer Science",
-        school_name: "University of California, Santa Barbara",
-        start_date: "2014",
-        end_date: "2018",
-        description: "Focus on human-computer interaction",
-        school_logo: "https://logo.clearbit.com/ucsb.edu"
-      }
-    ]
-  },
-  {
-    id: "profile-10",
-    category: ["Engineer", "SF Tech Scene"],
-    responded: false,
-    lastContactDate: "2024-05-07",
-    message: "Hi Ethan, we connected at SF TechWeek last month, and I wanted to follow up. I'm particularly interested in your experience leading engineering teams at Stripe. I'm currently scaling my own team and would value any insights you might have on managing technical growth while maintaining code quality.",
-    profile: {
-      id: "ethan-brown",
-      name: "Ethan Brown",
-      location: "San Francisco, CA",
-      headline: "Engineering Director at Stripe | Distributed Systems | Engineering Leadership",
-      description: "Leading engineering teams that build financial infrastructure at Stripe. Passionate about distributed systems, engineering excellence, and building inclusive teams that deliver impactful products.",
-      title: "Engineering Director",
-      profile_picture_url: "https://i.pravatar.cc/150?img=50",
-      linkedin_url: "https://linkedin.com/in/example"
-    },
-    experience: [
-      {
-        title: "Engineering Director",
-        company_name: "Stripe",
-        start_date: "2021-03",
-        end_date: "present",
-        description: "Leading multiple engineering teams working on Stripe's core payment processing infrastructure. Responsible for technical strategy, team growth, and delivering reliable systems at scale.",
-        location: "San Francisco, CA",
-        company_logo: "https://logo.clearbit.com/stripe.com"
-      },
-      {
-        title: "Engineering Manager",
-        company_name: "Stripe",
-        start_date: "2019-01",
-        end_date: "2021-02",
-        description: "Managed the Payments API team, focusing on developer experience and API reliability.",
-        location: "San Francisco, CA",
-        company_logo: "https://logo.clearbit.com/stripe.com"
-      },
-      {
-        title: "Senior Software Engineer",
-        company_name: "Square",
-        start_date: "2016-05",
-        end_date: "2018-12",
-        description: "Built payment processing systems and merchant-facing APIs.",
-        location: "San Francisco, CA",
-        company_logo: "https://logo.clearbit.com/squareup.com"
-      }
-    ],
-    education: [
-      {
-        degree: "Master of Science",
-        field_of_study: "Computer Science",
-        school_name: "University of Washington",
-        start_date: "2014",
-        end_date: "2016",
-        description: "Specialization in distributed systems",
-        school_logo: "https://logo.clearbit.com/washington.edu"
-      },
-      {
-        degree: "Bachelor of Science",
-        field_of_study: "Computer Engineering",
-        school_name: "Carnegie Mellon University",
-        start_date: "2010",
-        end_date: "2014",
-        description: "Minor in Business Administration",
-        school_logo: "https://logo.clearbit.com/cmu.edu"
+        degree: "B.E",
+        field_of_study: "Computer Science and Engineering",
+        school_name: "Bharathidasan University",
+        start_date: "1985",
+        end_date: "1989",
+        description: "Foundational education in computer science and engineering principles.",
+        school_logo: ""
       }
     ]
   }

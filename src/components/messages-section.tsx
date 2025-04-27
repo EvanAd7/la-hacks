@@ -64,11 +64,11 @@ export function MessagesSection({
       </div>
       
       <div className="space-y-8">
-        {displayedProfiles.map((profile) => (
+        {displayedProfiles.map((profile, index) => (
           <MessageCard
-            key={profile.profile.id}
+            key={`${profile.profile.id}-${index}`}
             profile={profile}
-            message={generatedMessages[profile.profile.id] || ""}
+            message={generatedMessages[`${profile.profile.id}-${index}`] || generatedMessages[profile.profile.id] || ""}
             onMessageChange={(message) => onMessageChange(profile.profile.id, message)}
             onRegenerateMessage={() => onRegenerateMessage(profile.profile.id)}
           />

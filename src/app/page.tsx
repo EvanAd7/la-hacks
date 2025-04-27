@@ -161,13 +161,19 @@ export default function Home() {
     // Only update when we have both profiles and messages
     if (profiles.length > 0 && Object.keys(generatedMessages).length > 0) {
       const newMessages = profiles
-        .filter(profile => generatedMessages[profile.profile.id] && profile.profile.linkedin_url)
-        .map(profile => ({
-          linkedinUrl: profile.profile.linkedin_url || "",
-          body: generatedMessages[profile.profile.id] || "",
-          subject: "Curious about your experience",
-          name: profile.profile.name || ""
-        }));
+        .filter((profile, index) => {
+          const uniqueId = `${profile.profile.id}-${index}`;
+          return (generatedMessages[uniqueId] || generatedMessages[profile.profile.id]) && profile.profile.linkedin_url;
+        })
+        .map((profile, index) => {
+          const uniqueId = `${profile.profile.id}-${index}`;
+          return {
+            linkedinUrl: profile.profile.linkedin_url || "",
+            body: generatedMessages[uniqueId] || generatedMessages[profile.profile.id] || "",
+            subject: "Curious about your experience",
+            name: profile.profile.name || ""
+          };
+        });
       
       setMessages(newMessages);
     }
@@ -308,12 +314,15 @@ export default function Home() {
       const messageStartTime = performance.now();
       console.log(`[${new Date().toISOString()}] [page] Generating message ${i+1}/${profilesData.length} for ${profile.profile.name}`);
       
+      // Create a unique ID by appending the index to handle potential duplicate IDs
+      const uniqueProfileId = `${profile.profile.id}-${i}`;
+      
       try {
         // Set placeholder
-        messages[profile.profile.id] = "Generating personalized message...";
+        messages[uniqueProfileId] = "Generating personalized message...";
         setGeneratedMessages(prev => ({
           ...prev,
-          [profile.profile.id]: "Generating personalized message..."
+          [uniqueProfileId]: "Generating personalized message..."
         }));
         
         // Generate message for this profile
@@ -335,26 +344,26 @@ export default function Home() {
         
         if (messageData.success && messageData.results) {
           console.log(`[${new Date().toISOString()}] [page] Message ${i+1} generated successfully in ${(messageEndTime - messageStartTime).toFixed(2)}ms`);
-          messages[profile.profile.id] = messageData.results.message;
+          messages[uniqueProfileId] = messageData.results.message;
           // Update one by one to prevent full refresh
           setGeneratedMessages(prev => ({
             ...prev,
-            [profile.profile.id]: messageData.results.message
+            [uniqueProfileId]: messageData.results.message
           }));
         } else {
           console.error(`[${new Date().toISOString()}] [page] Failed to generate message ${i+1}:`, messageData.error);
-          messages[profile.profile.id] = "Failed to generate a personalized message.";
+          messages[uniqueProfileId] = "Failed to generate a personalized message.";
           setGeneratedMessages(prev => ({
             ...prev,
-            [profile.profile.id]: "Failed to generate a personalized message."
+            [uniqueProfileId]: "Failed to generate a personalized message."
           }));
         }
       } catch (error) {
         console.error(`[${new Date().toISOString()}] [page] Error generating message ${i+1}:`, error);
-        messages[profile.profile.id] = "Error generating message.";
+        messages[uniqueProfileId] = "Error generating message.";
         setGeneratedMessages(prev => ({
           ...prev,
-          [profile.profile.id]: "Error generating message."
+          [uniqueProfileId]: "Error generating message."
         }));
       }
     }
@@ -363,15 +372,30 @@ export default function Home() {
   };
 
   const handleMessageChange = (profileId: string, newMessage: string) => {
-    setGeneratedMessages(prev => ({
-      ...prev,
-      [profileId]: newMessage
-    }));
+    // Find the profile in the profiles array
+    const index = profiles.findIndex(p => p.profile.id === profileId);
+    if (index !== -1) {
+      const uniqueId = `${profileId}-${index}`;
+      setGeneratedMessages(prev => ({
+        ...prev,
+        [uniqueId]: newMessage
+      }));
+    } else {
+      // Fallback to the old ID format if profile not found
+      setGeneratedMessages(prev => ({
+        ...prev,
+        [profileId]: newMessage
+      }));
+    }
   };
 
   const handleRegenerateMessage = async (profileId: string) => {
-    const profile = profiles.find(p => p.profile.id === profileId);
-    if (!profile) return;
+    // Find the profile and its index
+    const profileIndex = profiles.findIndex(p => p.profile.id === profileId);
+    if (profileIndex === -1) return;
+    
+    const profile = profiles[profileIndex];
+    const uniqueId = `${profileId}-${profileIndex}`;
     
     const regenerateStartTime = performance.now();
     console.log(`[${new Date().toISOString()}] [page] Regenerating message for ${profile.profile.name}`);
@@ -380,7 +404,7 @@ export default function Home() {
       // Show loading state for this message
       setGeneratedMessages(prev => ({
         ...prev,
-        [profileId]: "Regenerating message..."
+        [uniqueId]: "Regenerating message..."
       }));
       
       // Get latest user profile data
@@ -407,7 +431,7 @@ export default function Home() {
         console.log(`[${new Date().toISOString()}] [page] Message regenerated successfully in ${(regenerateEndTime - regenerateStartTime).toFixed(2)}ms`);
         setGeneratedMessages(prev => ({
           ...prev,
-          [profileId]: messageData.results.message
+          [uniqueId]: messageData.results.message
         }));
       } else {
         throw new Error(messageData.error || "Failed to regenerate message");
@@ -416,7 +440,7 @@ export default function Home() {
       console.error(`[${new Date().toISOString()}] [page] Error regenerating message:`, error);
       setGeneratedMessages(prev => ({
         ...prev,
-        [profileId]: "Error regenerating message. Please try again."
+        [uniqueId]: "Error regenerating message. Please try again."
       }));
     }
   };
