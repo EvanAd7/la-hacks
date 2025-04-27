@@ -109,6 +109,18 @@ export function Navigation() {
               Send
             </Link>
             <Link 
+              href="/dashboard" 
+              className="px-3 py-2 rounded-md text-sm font-medium text-foreground/80 hover:text-primary hover:bg-muted/30 transition-colors"
+            >
+              Dashboard
+            </Link>
+            <Link 
+              href="/explore" 
+              className="px-3 py-2 rounded-md text-sm font-medium text-foreground/80 hover:text-primary hover:bg-muted/30 transition-colors"
+            >
+              Explore
+            </Link>
+            <Link 
               href="/profile" 
               className={`px-3 py-2 rounded-md text-sm font-medium ${
                 pathname === "/profile" 
