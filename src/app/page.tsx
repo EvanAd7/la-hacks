@@ -561,7 +561,7 @@ export default function Home() {
           {/* Loading Animation */}
           {isLoading && (
             <div className="flex justify-center mt-6 w-full">
-              <div className="relative w-[500px] h-[500px] -mt-40">
+              <div className="relative w-[500px] h-[500px] -mt-30">
                 <Image
                   src="/Loading Animation.gif"
                   alt="Loading Animation"
